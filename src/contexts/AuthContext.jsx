@@ -12,7 +12,7 @@ import {
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-import { auth, db } from "../firebase/firebase";
+import { auth, db } from "../Firebase/Firebase";
 
 /* =========================================================
    AUTH CONTEXT

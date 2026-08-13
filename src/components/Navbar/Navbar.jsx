@@ -21,7 +21,7 @@ import { useCart } from "../../contexts/CartContext";
 
 import { collection, getDocs } from "firebase/firestore";
 
-import { db } from "../../firebase/firebase";
+import { db } from "../../Firebase/Firebase";
 
 import "./Navbar.css";
 

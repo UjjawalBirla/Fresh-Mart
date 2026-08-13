@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
-import { db } from "../../firebase/firebase";
+import { db } from "../../Firebase/Firebase";
 
 import "./Settings.css";
 

@@ -13,7 +13,7 @@ import {
 
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
-import { db } from "../../firebase/firebase";
+import { db } from "../../Firebase/Firebase";
 
 import "./Customers.css";
 
