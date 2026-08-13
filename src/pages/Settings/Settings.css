@@ -1,0 +1,1689 @@
+/* =========================================
+   SETTINGS PAGE
+========================================= */
+
+.settings-page {
+  min-height: calc(100vh - 75px);
+
+  padding: 35px 5% 60px;
+
+  background: #f7faf8;
+
+  color: #172033;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.settings-header {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 30px;
+}
+
+.settings-header-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 24px;
+}
+
+.settings-label {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color: #16a34a;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.settings-header h1 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.settings-header p {
+  margin: 6px 0 0;
+
+  color: #8a94a6;
+
+  font-size: 13px;
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.settings-error {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 20px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  background: #fef2f2;
+
+  color: #dc2626;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.settings-error > svg {
+  flex-shrink: 0;
+
+  font-size: 16px;
+}
+
+.settings-error span {
+  flex: 1;
+}
+
+.settings-error button {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #dc2626;
+
+  cursor: pointer;
+}
+
+.settings-error button:hover {
+  background: #fee2e2;
+}
+
+/* =========================================
+   SECTION
+========================================= */
+
+.settings-section {
+  margin-bottom: 25px;
+
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ebe7;
+
+  border-radius: 16px;
+
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.04);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.settings-section-header {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 22px;
+}
+
+.settings-section-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 19px;
+}
+
+.settings-section-header > div:nth-child(2) {
+  flex: 1;
+}
+
+.settings-section-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.settings-section-header p {
+  margin: 4px 0 0;
+
+  color: #8a94a6;
+
+  font-size: 12px;
+}
+
+/* =========================================
+   REFRESH BUTTON
+========================================= */
+
+.settings-refresh-btn {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 1px solid #dfe7e2;
+
+  border-radius: 9px;
+
+  background: #f8faf9;
+
+  color: #64748b;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.settings-refresh-btn:hover:not(:disabled) {
+  border-color: #86efac;
+
+  background: #ecfdf5;
+
+  color: #16a34a;
+}
+
+.settings-refresh-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+.settings-refresh-spin {
+  animation: settings-refresh-spin 0.8s linear infinite;
+}
+
+@keyframes settings-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   ORDER ACTIONS
+========================================= */
+
+.settings-actions {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.settings-action-card {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+
+  background: #f9fbfa;
+
+  border: 1px solid #e5ebe7;
+
+  border-radius: 14px;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.settings-action-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #bbf7d0;
+
+  background: #ffffff;
+
+  box-shadow: 0 9px 25px rgba(0, 0, 0, 0.06);
+}
+
+.settings-action-icon {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 12px;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 20px;
+}
+
+.settings-action-content {
+  flex: 1;
+}
+
+.settings-action-content h3 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.settings-action-content p {
+  min-height: 55px;
+
+  margin: 7px 0 18px;
+
+  color: #8a94a6;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+.settings-action-btn {
+  width: 100%;
+  min-height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.settings-action-btn:hover {
+  background: #15803d;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.2);
+}
+
+.settings-action-btn svg {
+  font-size: 14px;
+
+  transition: transform 0.2s ease;
+}
+
+.settings-action-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* =========================================
+   USER COUNT
+========================================= */
+
+.settings-user-count {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  width: fit-content;
+
+  margin-bottom: 17px;
+
+  padding: 9px 13px;
+
+  border: 1px solid #dcfce7;
+
+  border-radius: 9px;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.settings-user-count svg {
+  font-size: 16px;
+}
+
+.settings-user-count strong {
+  min-width: 25px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2px 6px;
+
+  border-radius: 20px;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   USERS LIST
+========================================= */
+
+.settings-users-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+/* =========================================
+   USER CARD
+========================================= */
+
+.settings-user-card {
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    48px
+    minmax(0, 1fr)
+    minmax(150px, 220px)
+    auto;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 15px;
+
+  background: #f9fbfa;
+
+  border: 1px solid #e5ebe7;
+
+  border-radius: 12px;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.settings-user-card:hover {
+  border-color: #d1e7d6;
+
+  background: #ffffff;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+}
+
+/* =========================================
+   USER AVATAR
+========================================= */
+
+.settings-user-avatar {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 19px;
+}
+
+/* =========================================
+   USER INFO
+========================================= */
+
+.settings-user-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.settings-user-name {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.settings-user-name h3 {
+  min-width: 0;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #172033;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.settings-user-role {
+  flex-shrink: 0;
+
+  padding: 3px 7px;
+
+  border-radius: 20px;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+.settings-user-role.admin {
+  background: #ede9fe;
+
+  color: #7c3aed;
+}
+
+/* =========================================
+   USER EMAIL
+========================================= */
+
+.settings-user-email {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #8a94a6;
+
+  font-size: 11px;
+}
+
+.settings-user-email svg {
+  flex-shrink: 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+}
+
+.settings-user-email span {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   USER UID
+========================================= */
+
+.settings-user-uid {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 4px;
+
+  padding-left: 14px;
+
+  border-left: 1px solid #e5ebe7;
+}
+
+.settings-user-uid span {
+  color: #94a3b8;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+}
+
+.settings-user-uid strong {
+  max-width: 200px;
+
+  overflow: hidden;
+
+  color: #64748b;
+
+  font-family: monospace;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   DELETE USER BUTTON
+========================================= */
+
+.settings-delete-user {
+  min-width: 76px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 0 10px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  background: #fff7f7;
+
+  color: #dc2626;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.settings-delete-user:hover:not(:disabled) {
+  border-color: #f87171;
+
+  background: #fee2e2;
+
+  color: #b91c1c;
+
+  transform: translateY(-1px);
+}
+
+.settings-delete-user svg {
+  font-size: 13px;
+}
+
+.settings-delete-user:disabled {
+  border-color: #e2e8f0;
+
+  background: #f1f5f9;
+
+  color: #94a3b8;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   LOADING USERS
+========================================= */
+
+.settings-users-loading {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  color: #8a94a6;
+
+  font-size: 12px;
+}
+
+.settings-spinner {
+  width: 30px;
+  height: 30px;
+
+  border: 3px solid #dce5df;
+
+  border-top-color: #43a047;
+
+  border-radius: 50%;
+
+  animation: settings-spin 0.8s linear infinite;
+}
+
+@keyframes settings-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   NO USERS
+========================================= */
+
+.settings-no-users {
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  text-align: center;
+
+  border: 1px dashed #dbe5df;
+
+  border-radius: 12px;
+
+  background: #fafcfb;
+}
+
+.settings-no-users > svg {
+  margin-bottom: 10px;
+
+  color: #43a047;
+
+  font-size: 28px;
+}
+
+.settings-no-users h3 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 15px;
+}
+
+.settings-no-users p {
+  margin: 6px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   SYSTEM INFO
+========================================= */
+
+.settings-info-card {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.settings-info-card > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  padding: 16px;
+
+  border: 1px solid #e5ebe7;
+
+  border-radius: 11px;
+
+  background: #f9fbfa;
+}
+
+.settings-info-card span {
+  color: #94a3b8;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.settings-info-card strong {
+  color: #172033;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* =========================================
+   DELETE MODAL OVERLAY
+========================================= */
+
+.settings-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  backdrop-filter: blur(4px);
+
+  animation: settings-overlay-in 0.2s ease;
+}
+
+@keyframes settings-overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================
+   DELETE MODAL
+========================================= */
+
+.settings-delete-modal {
+  width: min(430px, 100%);
+
+  padding: 28px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+
+  text-align: center;
+
+  animation: settings-modal-in 0.22s ease;
+}
+
+@keyframes settings-modal-in {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================
+   DELETE ICON
+========================================= */
+
+.settings-delete-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 24px;
+}
+
+/* =========================================
+   DELETE TITLE
+========================================= */
+
+.settings-delete-modal h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.settings-delete-modal > p {
+  margin: 8px 0 17px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+/* =========================================
+   SELECTED USER
+========================================= */
+
+.settings-delete-user-info {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 12px;
+
+  border: 1px solid #e5ebe7;
+
+  border-radius: 11px;
+
+  background: #f9fbfa;
+
+  text-align: left;
+}
+
+.settings-delete-avatar {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 17px;
+}
+
+.settings-delete-user-info > div:last-child {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.settings-delete-user-info strong {
+  overflow: hidden;
+
+  color: #172033;
+
+  font-size: 13px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.settings-delete-user-info span {
+  overflow: hidden;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   WARNING
+========================================= */
+
+.settings-delete-modal .settings-delete-warning {
+  margin: 12px 0 20px;
+
+  padding: 9px 10px;
+
+  border-radius: 8px;
+
+  background: #fff7ed;
+
+  color: #c2410c;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   MODAL BUTTONS
+========================================= */
+
+.settings-modal-actions {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+}
+
+.settings-cancel-btn,
+.settings-confirm-delete-btn {
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.settings-cancel-btn {
+  border: 1px solid #dbe3df;
+
+  background: #ffffff;
+
+  color: #64748b;
+}
+
+.settings-cancel-btn:hover:not(:disabled) {
+  background: #f8fafc;
+
+  color: #334155;
+}
+
+.settings-confirm-delete-btn {
+  border: none;
+
+  background: #dc2626;
+
+  color: #ffffff;
+}
+
+.settings-confirm-delete-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.settings-cancel-btn:disabled,
+.settings-confirm-delete-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   BUTTON SPINNER
+========================================= */
+
+.settings-button-spinner {
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: settings-button-spin 0.7s linear infinite;
+}
+
+@keyframes settings-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+[data-theme="dark"] .settings-page {
+  background: #0f172a;
+
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-header-icon {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-label {
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-header h1 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-header p {
+  color: #94a3b8;
+}
+
+/* ERROR */
+
+[data-theme="dark"] .settings-error {
+  background: #3b1515;
+
+  border-color: #7f1d1d;
+
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .settings-error button {
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .settings-error button:hover {
+  background: #4c1d1d;
+}
+
+/* SECTION */
+
+[data-theme="dark"] .settings-section {
+  background: #111827;
+
+  border-color: #263244;
+
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .settings-section-icon {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-section-header h2 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-section-header p {
+  color: #94a3b8;
+}
+
+/* REFRESH */
+
+[data-theme="dark"] .settings-refresh-btn {
+  border-color: #334155;
+
+  background: #0f172a;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-refresh-btn:hover:not(:disabled) {
+  border-color: #43a047;
+
+  background: #183b20;
+
+  color: #81c784;
+}
+
+/* ORDER CARDS */
+
+[data-theme="dark"] .settings-action-card {
+  background: #0f172a;
+
+  border-color: #263244;
+}
+
+[data-theme="dark"] .settings-action-card:hover {
+  background: #111827;
+
+  border-color: #315f35;
+}
+
+[data-theme="dark"] .settings-action-icon {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-action-content h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-action-content p {
+  color: #94a3b8;
+}
+
+/* USER COUNT */
+
+[data-theme="dark"] .settings-user-count {
+  background: #14261a;
+
+  border-color: #315f35;
+
+  color: #81c784;
+}
+
+/* USER CARD */
+
+[data-theme="dark"] .settings-user-card {
+  background: #0f172a;
+
+  border-color: #263244;
+}
+
+[data-theme="dark"] .settings-user-card:hover {
+  background: #111827;
+
+  border-color: #315f35;
+}
+
+[data-theme="dark"] .settings-user-avatar {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-user-name h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-user-role {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-user-role.admin {
+  background: #2e2154;
+
+  color: #c4b5fd;
+}
+
+[data-theme="dark"] .settings-user-email {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-user-email svg {
+  color: #64748b;
+}
+
+[data-theme="dark"] .settings-user-uid {
+  border-left-color: #263244;
+}
+
+[data-theme="dark"] .settings-user-uid span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .settings-user-uid strong {
+  color: #94a3b8;
+}
+
+/* DELETE BUTTON */
+
+[data-theme="dark"] .settings-delete-user {
+  border-color: #7f1d1d;
+
+  background: #2b1518;
+
+  color: #f87171;
+}
+
+[data-theme="dark"] .settings-delete-user:hover:not(:disabled) {
+  background: #3b1515;
+
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .settings-delete-user:disabled {
+  border-color: #334155;
+
+  background: #1e293b;
+
+  color: #64748b;
+}
+
+/* LOADING */
+
+[data-theme="dark"] .settings-users-loading {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-spinner {
+  border-color: #334155;
+
+  border-top-color: #4caf50;
+}
+
+/* NO USERS */
+
+[data-theme="dark"] .settings-no-users {
+  border-color: #334155;
+
+  background: #0f172a;
+}
+
+[data-theme="dark"] .settings-no-users > svg {
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-no-users h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-no-users p {
+  color: #64748b;
+}
+
+/* SYSTEM INFO */
+
+[data-theme="dark"] .settings-info-card > div {
+  background: #0f172a;
+
+  border-color: #263244;
+}
+
+[data-theme="dark"] .settings-info-card span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .settings-info-card strong {
+  color: #f8fafc;
+}
+
+/* DELETE MODAL */
+
+[data-theme="dark"] .settings-modal-overlay {
+  background: rgba(2, 6, 23, 0.72);
+}
+
+[data-theme="dark"] .settings-delete-modal {
+  background: #111827;
+
+  border-color: #263244;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .settings-delete-icon {
+  background: #3b1515;
+
+  color: #f87171;
+}
+
+[data-theme="dark"] .settings-delete-modal h2 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-delete-modal > p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-delete-user-info {
+  background: #0f172a;
+
+  border-color: #263244;
+}
+
+[data-theme="dark"] .settings-delete-avatar {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .settings-delete-user-info strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-delete-user-info span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .settings-delete-modal .settings-delete-warning {
+  background: #3b2515;
+
+  color: #fb923c;
+}
+
+[data-theme="dark"] .settings-cancel-btn {
+  background: #0f172a;
+
+  border-color: #334155;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-cancel-btn:hover:not(:disabled) {
+  background: #1e293b;
+
+  color: #f8fafc;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+  .settings-page {
+    padding: 30px 4% 50px;
+  }
+
+  .settings-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .settings-user-card {
+    grid-template-columns:
+      48px
+      minmax(0, 1fr)
+      auto;
+  }
+
+  .settings-user-uid {
+    display: none;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+  .settings-page {
+    padding: 25px 15px 45px;
+  }
+
+  .settings-header {
+    align-items: flex-start;
+  }
+
+  .settings-header-icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 12px;
+
+    font-size: 21px;
+  }
+
+  .settings-header h1 {
+    font-size: 27px;
+  }
+
+  .settings-header p {
+    font-size: 12px;
+  }
+
+  .settings-section {
+    padding: 19px;
+  }
+
+  .settings-section-header {
+    align-items: flex-start;
+  }
+
+  .settings-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-action-content p {
+    min-height: auto;
+  }
+
+  .settings-user-card {
+    grid-template-columns:
+      45px
+      minmax(0, 1fr)
+      auto;
+
+    gap: 10px;
+
+    padding: 12px;
+  }
+
+  .settings-user-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .settings-delete-user {
+    min-width: 38px;
+
+    width: 38px;
+
+    padding: 0;
+  }
+
+  .settings-delete-user span {
+    display: none;
+  }
+
+  .settings-info-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+  .settings-page {
+    padding: 20px 12px 40px;
+  }
+
+  .settings-header {
+    gap: 10px;
+  }
+
+  .settings-header-icon {
+    width: 42px;
+    height: 42px;
+
+    font-size: 19px;
+  }
+
+  .settings-header h1 {
+    font-size: 24px;
+  }
+
+  .settings-section {
+    padding: 16px;
+  }
+
+  .settings-section-header h2 {
+    font-size: 17px;
+  }
+
+  .settings-section-header p {
+    font-size: 11px;
+  }
+
+  .settings-action-card {
+    padding: 16px;
+  }
+
+  .settings-user-name {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+  .settings-user-name h3 {
+    max-width: 150px;
+
+    font-size: 13px;
+  }
+
+  .settings-user-email {
+    font-size: 10px;
+  }
+
+  .settings-delete-modal {
+    padding: 22px 18px;
+
+    border-radius: 15px;
+  }
+
+  .settings-modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.settings-refresh-btn:focus-visible,
+.settings-delete-user:focus-visible,
+.settings-error button:focus-visible,
+.settings-action-btn:focus-visible,
+.settings-cancel-btn:focus-visible,
+.settings-confirm-delete-btn:focus-visible {
+  outline: 2px solid #43a047;
+
+  outline-offset: 3px;
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-action-card,
+  .settings-action-btn,
+  .settings-delete-user,
+  .settings-refresh-btn {
+    transition: none;
+  }
+
+  .settings-refresh-spin,
+  .settings-spinner,
+  .settings-button-spinner,
+  .settings-modal-overlay,
+  .settings-delete-modal {
+    animation: none;
+  }
+}

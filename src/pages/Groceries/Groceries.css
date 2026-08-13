@@ -1,0 +1,1269 @@
+/* =========================================================
+   GROCERIES PAGE
+========================================================= */
+
+.groceries-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 24px;
+
+  background: #f8fafc;
+  color: #172033;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.groceries-hero {
+  width: 100%;
+  min-height: 230px;
+
+  padding: 40px 50px;
+  margin-bottom: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 24px;
+
+  background: linear-gradient(135deg, #fff1e7 0%, #fff8f2 50%, #ffffff 100%);
+
+  border: 1px solid #f4e0d2;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.groceries-hero-content {
+  max-width: 650px;
+}
+
+.page-label {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color: #f97316;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.groceries-hero h1 {
+  margin: 0 0 10px;
+
+  color: #172033;
+
+  font-size: clamp(32px, 5vw, 54px);
+
+  line-height: 1.05;
+
+  transition: color 0.3s ease;
+}
+
+.groceries-hero p {
+  margin: 0;
+
+  max-width: 600px;
+
+  color: #687385;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+
+  transition: color 0.3s ease;
+}
+
+.hero-grocery {
+  width: 150px;
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  font-size: 80px;
+
+  box-shadow: 0 18px 45px rgba(249, 115, 22, 0.12);
+
+  flex-shrink: 0;
+
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.products-error {
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  background: #fff1f1;
+
+  border: 1px solid #ffcaca;
+
+  color: #c62828;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.grocery-toolbar {
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.grocery-search {
+  width: min(500px, 100%);
+
+  height: 48px;
+
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #e1e6ed;
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+
+  transition:
+    0.2s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.grocery-search:focus-within {
+  border-color: #f97316;
+
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.grocery-search svg {
+  color: #788392;
+
+  font-size: 20px;
+
+  flex-shrink: 0;
+}
+
+.grocery-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #172033;
+
+  font-size: 14px;
+
+  transition: color 0.3s ease;
+}
+
+.grocery-search input::placeholder {
+  color: #9ba4b0;
+}
+
+.grocery-result-count {
+  color: #687385;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: color 0.3s ease;
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.grocery-categories {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 28px;
+
+  padding-bottom: 5px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.grocery-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.grocery-category-btn {
+  flex-shrink: 0;
+
+  padding: 10px 18px;
+
+  border: 1px solid #e0e5eb;
+
+  border-radius: 30px;
+
+  background: #ffffff;
+
+  color: #5e6877;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    all 0.2s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.grocery-category-btn:hover {
+  border-color: #f97316;
+
+  color: #ea580c;
+
+  transform: translateY(-1px);
+}
+
+.grocery-category-btn.active {
+  background: #f97316;
+
+  border-color: #f97316;
+
+  color: #ffffff;
+
+  box-shadow: 0 7px 18px rgba(249, 115, 22, 0.2);
+}
+
+/* =========================================================
+   PRODUCTS GRID
+========================================================= */
+
+.grocery-products {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 22px;
+}
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.grocery-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 20px;
+
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+
+  box-sizing: border-box;
+}
+
+.grocery-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.11);
+}
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.grocery-image {
+  position: relative;
+
+  width: 100%;
+  height: 235px;
+
+  overflow: hidden;
+
+  background: #f3f5f7;
+
+  transition: background-color 0.3s ease;
+}
+
+.grocery-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.4s ease;
+}
+
+.grocery-card:hover .grocery-image img {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   WISHLIST
+========================================================= */
+
+.grocery-wishlist {
+  position: absolute;
+
+  top: 13px;
+  right: 13px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  color: #667085;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+
+  transition:
+    all 0.2s ease,
+    background-color 0.3s ease;
+}
+
+.grocery-wishlist:hover {
+  transform: scale(1.08);
+
+  color: #ef4444;
+}
+
+.grocery-wishlist.liked {
+  color: #ef4444;
+
+  background: #fff1f2;
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.grocery-info {
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  box-sizing: border-box;
+}
+
+.grocery-category {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #f97316;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.grocery-info h3 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  line-height: 1.35;
+
+  min-height: 23px;
+
+  transition: color 0.3s ease;
+}
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.grocery-rating {
+  width: 100%;
+
+  margin-top: 10px;
+
+  display: flex;
+  align-items: center;
+}
+
+.grocery-rating span {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #d97706;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.grocery-rating span svg {
+  width: 15px;
+  height: 15px;
+
+  fill: currentColor;
+}
+
+/* =========================================================
+   STOCK AVAILABLE
+========================================================= */
+
+.grocery-stock-available {
+  width: fit-content;
+
+  margin-top: 9px;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #effaf3;
+
+  color: #269447;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   OUT OF STOCK
+========================================================= */
+
+.grocery-stock-out {
+  width: fit-content;
+
+  margin-top: 9px;
+
+  padding: 6px 10px;
+
+  border-radius: 6px;
+
+  background: #fff0f0;
+
+  color: #d32f2f;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   STOCK ERROR
+========================================================= */
+
+.grocery-stock-error {
+  width: 100%;
+
+  margin-top: 9px;
+
+  padding: 7px 10px;
+
+  border-radius: 7px;
+
+  background: #fff4e5;
+
+  border: 1px solid #ffd7a3;
+
+  color: #c66a00;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.grocery-price {
+  width: 100%;
+
+  margin-top: auto;
+
+  padding-top: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.grocery-price > div {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+.grocery-price strong {
+  color: #ea580c;
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.grocery-price del {
+  color: #a0a8b3;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+.add-cart-btn {
+  min-width: 72px;
+
+  height: 38px;
+
+  padding: 0 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #f97316;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+.add-cart-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.add-cart-btn:hover:not(:disabled) {
+  background: #ea580c;
+
+  transform: translateY(-1px);
+}
+
+.add-cart-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.add-cart-btn:disabled {
+  background: #b8bec5;
+
+  color: #ffffff;
+
+  cursor: not-allowed;
+
+  opacity: 0.75;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.grocery-empty {
+  width: 100%;
+
+  min-height: 280px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e9ee;
+
+  border-radius: 20px;
+
+  box-sizing: border-box;
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.grocery-empty span {
+  margin-bottom: 12px;
+
+  font-size: 50px;
+}
+
+.grocery-empty h3 {
+  margin: 0 0 6px;
+
+  color: #172033;
+
+  font-size: 20px;
+
+  transition: color 0.3s ease;
+}
+
+.grocery-empty p {
+  margin: 0;
+
+  color: #8a94a6;
+
+  font-size: 14px;
+
+  transition: color 0.3s ease;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.products-loading {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #697586;
+
+  text-align: center;
+
+  transition: color 0.3s ease;
+}
+
+.product-spinner {
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 15px;
+
+  border: 4px solid #ffe4d2;
+
+  border-top-color: #f97316;
+
+  border-radius: 50%;
+
+  animation: grocerySpin 0.8s linear infinite;
+}
+
+.products-loading p {
+  margin: 0;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+@keyframes grocerySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+:root[data-theme="dark"] .groceries-page {
+  background: #0b1120;
+
+  color: #f8fafc;
+}
+
+/* =========================================================
+   DARK HERO
+========================================================= */
+
+:root[data-theme="dark"] .groceries-hero {
+  background: linear-gradient(135deg, #2b2119 0%, #25201b 48%, #151e2e 100%);
+
+  border-color: #4a3727;
+}
+
+:root[data-theme="dark"] .groceries-hero h1 {
+  color: #f8fafc;
+}
+
+:root[data-theme="dark"] .groceries-hero p {
+  color: #aeb8c7;
+}
+
+:root[data-theme="dark"] .page-label {
+  color: #fb923c;
+}
+
+:root[data-theme="dark"] .hero-grocery {
+  background: rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   DARK ERROR
+========================================================= */
+
+:root[data-theme="dark"] .products-error {
+  background: #35191c;
+
+  border-color: #6b292d;
+
+  color: #ff8b8b;
+}
+
+/* =========================================================
+   DARK SEARCH
+========================================================= */
+
+:root[data-theme="dark"] .grocery-search {
+  background: #111827;
+
+  border-color: #293548;
+}
+
+:root[data-theme="dark"] .grocery-search svg {
+  color: #9aa6b5;
+}
+
+:root[data-theme="dark"] .grocery-search input {
+  color: #f8fafc;
+}
+
+:root[data-theme="dark"] .grocery-search input::placeholder {
+  color: #718096;
+}
+
+:root[data-theme="dark"] .grocery-result-count {
+  color: #aeb8c7;
+}
+
+/* =========================================================
+   DARK CATEGORIES
+========================================================= */
+
+:root[data-theme="dark"] .grocery-category-btn {
+  background: #151e2e;
+
+  border-color: #293548;
+
+  color: #c0c9d5;
+}
+
+:root[data-theme="dark"] .grocery-category-btn:hover {
+  border-color: #f97316;
+
+  color: #fb923c;
+
+  background: #2b2119;
+}
+
+:root[data-theme="dark"] .grocery-category-btn.active {
+  background: #f97316;
+
+  border-color: #f97316;
+
+  color: #ffffff;
+}
+
+/* =========================================================
+   DARK PRODUCT CARD
+========================================================= */
+
+:root[data-theme="dark"] .grocery-card {
+  background: #151e2e;
+
+  border-color: #293548;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+:root[data-theme="dark"] .grocery-card:hover {
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================================
+   DARK IMAGE
+========================================================= */
+
+:root[data-theme="dark"] .grocery-image {
+  background: #111827;
+}
+
+/* =========================================================
+   DARK WISHLIST
+========================================================= */
+
+:root[data-theme="dark"] .grocery-wishlist {
+  background: rgba(17, 24, 39, 0.94);
+
+  color: #aeb8c7;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="dark"] .grocery-wishlist:hover {
+  color: #ff6b6b;
+}
+
+:root[data-theme="dark"] .grocery-wishlist.liked {
+  color: #ff6b6b;
+
+  background: #35191c;
+}
+
+/* =========================================================
+   DARK INFO
+========================================================= */
+
+:root[data-theme="dark"] .grocery-category {
+  color: #fb923c;
+}
+
+:root[data-theme="dark"] .grocery-info h3 {
+  color: #f8fafc;
+}
+
+/* =========================================================
+   DARK RATING
+========================================================= */
+
+:root[data-theme="dark"] .grocery-rating span {
+  color: #fbbf24;
+}
+
+/* =========================================================
+   DARK STOCK AVAILABLE
+========================================================= */
+
+:root[data-theme="dark"] .grocery-stock-available {
+  background: #143522;
+
+  color: #5ee58b;
+}
+
+/* =========================================================
+   DARK STOCK OUT
+========================================================= */
+
+:root[data-theme="dark"] .grocery-stock-out {
+  background: #35191c;
+
+  color: #ff8585;
+}
+
+/* =========================================================
+   DARK STOCK ERROR
+========================================================= */
+
+:root[data-theme="dark"] .grocery-stock-error {
+  background: #352815;
+
+  border-color: #654b21;
+
+  color: #ffbd63;
+}
+
+/* =========================================================
+   DARK PRICE
+========================================================= */
+
+:root[data-theme="dark"] .grocery-price strong {
+  color: #fb923c;
+}
+
+:root[data-theme="dark"] .grocery-price del {
+  color: #7f8a98;
+}
+
+/* =========================================================
+   DARK CART
+========================================================= */
+
+:root[data-theme="dark"] .add-cart-btn {
+  background: #f97316;
+
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .add-cart-btn:hover:not(:disabled) {
+  background: #ea580c;
+}
+
+:root[data-theme="dark"] .add-cart-btn:disabled {
+  background: #4b5563;
+
+  color: #d1d5db;
+}
+
+/* =========================================================
+   DARK EMPTY
+========================================================= */
+
+:root[data-theme="dark"] .grocery-empty {
+  background: #151e2e;
+
+  border-color: #293548;
+}
+
+:root[data-theme="dark"] .grocery-empty h3 {
+  color: #f8fafc;
+}
+
+:root[data-theme="dark"] .grocery-empty p {
+  color: #9aa6b5;
+}
+
+/* =========================================================
+   DARK LOADING
+========================================================= */
+
+:root[data-theme="dark"] .products-loading {
+  color: #aeb8c7;
+}
+
+:root[data-theme="dark"] .product-spinner {
+  border-color: #3b3027;
+
+  border-top-color: #f97316;
+}
+
+/* =========================================================
+   RESPONSIVE - 1100
+========================================================= */
+
+@media (max-width: 1100px) {
+  .grocery-products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - 850
+========================================================= */
+
+@media (max-width: 850px) {
+  .groceries-page {
+    padding: 18px;
+  }
+
+  .groceries-hero {
+    padding: 32px;
+  }
+
+  .hero-grocery {
+    width: 120px;
+    height: 120px;
+
+    font-size: 65px;
+  }
+
+  .grocery-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - 600
+========================================================= */
+
+@media (max-width: 600px) {
+  .groceries-page {
+    padding: 12px;
+  }
+
+  .groceries-hero {
+    min-height: auto;
+
+    padding: 26px 22px;
+
+    border-radius: 18px;
+  }
+
+  .groceries-hero h1 {
+    font-size: 34px;
+  }
+
+  .groceries-hero p {
+    font-size: 14px;
+  }
+
+  .hero-grocery {
+    display: none;
+  }
+
+  .grocery-toolbar {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+  .grocery-search {
+    width: 100%;
+  }
+
+  .grocery-result-count {
+    padding-left: 3px;
+  }
+
+  .grocery-categories {
+    margin-bottom: 20px;
+  }
+
+  .grocery-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .grocery-card {
+    border-radius: 15px;
+  }
+
+  .grocery-image {
+    height: 175px;
+  }
+
+  .grocery-info {
+    padding: 13px;
+  }
+
+  .grocery-category {
+    font-size: 9px;
+  }
+
+  .grocery-info h3 {
+    font-size: 14px;
+  }
+
+  .grocery-rating {
+    margin-top: 7px;
+  }
+
+  .grocery-rating span {
+    font-size: 11px;
+  }
+
+  .grocery-stock-available,
+  .grocery-stock-out {
+    margin-top: 7px;
+
+    padding: 4px 7px;
+
+    font-size: 10px;
+  }
+
+  .grocery-stock-error {
+    margin-top: 7px;
+
+    padding: 6px 7px;
+
+    font-size: 9px;
+  }
+
+  .grocery-price {
+    padding-top: 11px;
+
+    gap: 6px;
+  }
+
+  .grocery-price strong {
+    font-size: 16px;
+  }
+
+  .grocery-price del {
+    font-size: 10px;
+  }
+
+  .add-cart-btn {
+    min-width: 58px;
+
+    height: 34px;
+
+    padding: 0 9px;
+
+    font-size: 11px;
+  }
+
+  .add-cart-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .grocery-wishlist {
+    width: 34px;
+    height: 34px;
+
+    top: 9px;
+    right: 9px;
+
+    font-size: 15px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE - 380
+========================================================= */
+
+@media (max-width: 380px) {
+  .grocery-products {
+    grid-template-columns: 1fr;
+  }
+
+  .grocery-image {
+    height: 210px;
+  }
+
+  .grocery-info h3 {
+    font-size: 16px;
+  }
+
+  .grocery-price strong {
+    font-size: 18px;
+  }
+
+  .add-cart-btn {
+    min-width: 70px;
+
+    height: 36px;
+
+    font-size: 12px;
+  }
+}

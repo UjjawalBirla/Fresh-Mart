@@ -1,0 +1,1221 @@
+/* =========================================================
+   VEGETABLES PAGE
+========================================================= */
+
+.vegetables-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 24px;
+
+  background: #f7faf8;
+
+  color: #17221b;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.vegetable-hero {
+  width: 100%;
+  min-height: 230px;
+
+  padding: 40px 50px;
+  margin-bottom: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 24px;
+
+  background: linear-gradient(135deg, #e7f8df 0%, #f5fff0 50%, #ffffff 100%);
+
+  border: 1px solid #deeddc;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+.vegetable-hero-content {
+  max-width: 650px;
+}
+
+.vegetable-page-label {
+  display: inline-block;
+
+  margin-bottom: 10px;
+
+  color: #23994c;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.vegetable-hero h1 {
+  margin: 0 0 10px;
+
+  color: #17251b;
+
+  font-size: clamp(32px, 5vw, 54px);
+
+  line-height: 1.05;
+}
+
+.vegetable-hero p {
+  margin: 0;
+
+  max-width: 600px;
+
+  color: #69766e;
+
+  font-size: 16px;
+
+  line-height: 1.7;
+}
+
+.vegetable-hero-emoji {
+  width: 150px;
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  font-size: 80px;
+
+  box-shadow: 0 18px 45px rgba(48, 110, 62, 0.12);
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.vegetable-error {
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  background: #fff0f0;
+
+  border: 1px solid #ffcaca;
+
+  color: #c62828;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.vegetable-toolbar {
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.vegetable-search {
+  width: min(500px, 100%);
+
+  height: 48px;
+
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe8e1;
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+
+  transition: 0.2s ease;
+}
+
+.vegetable-search:focus-within {
+  border-color: #25b858;
+
+  box-shadow: 0 0 0 3px rgba(37, 184, 88, 0.1);
+}
+
+.vegetable-search svg {
+  color: #6d7b72;
+
+  font-size: 20px;
+
+  flex-shrink: 0;
+}
+
+.vegetable-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #17221b;
+
+  font-size: 14px;
+}
+
+.vegetable-search input::placeholder {
+  color: #9aa59e;
+}
+
+.vegetable-result-count {
+  color: #68756d;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.vegetable-categories {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 28px;
+
+  padding-bottom: 5px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.vegetable-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.vegetable-category-btn {
+  flex-shrink: 0;
+
+  padding: 10px 18px;
+
+  border: 1px solid #dfe8e1;
+
+  border-radius: 30px;
+
+  background: #ffffff;
+
+  color: #56635a;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.vegetable-category-btn:hover {
+  border-color: #25b858;
+
+  color: #20a852;
+
+  transform: translateY(-1px);
+}
+
+.vegetable-category-btn.active {
+  background: #20a852;
+
+  border-color: #20a852;
+
+  color: #ffffff;
+
+  box-shadow: 0 7px 18px rgba(32, 168, 82, 0.2);
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.vegetable-products {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+
+  gap: 22px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.vegetable-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ebe6;
+
+  border-radius: 20px;
+
+  box-shadow: 0 8px 25px rgba(24, 67, 37, 0.06);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  box-sizing: border-box;
+}
+
+.vegetable-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: 0 18px 38px rgba(24, 67, 37, 0.11);
+}
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.vegetable-image {
+  position: relative;
+
+  width: 100%;
+  height: 235px;
+
+  overflow: hidden;
+
+  background: #f1f5f2;
+}
+
+.vegetable-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.4s ease;
+}
+
+.vegetable-card:hover .vegetable-image img {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   WISHLIST
+========================================================= */
+
+.vegetable-wishlist {
+  position: absolute;
+
+  top: 13px;
+  right: 13px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #66736a;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.2s ease;
+}
+
+.vegetable-wishlist:hover {
+  transform: scale(1.08);
+
+  color: #ef5350;
+}
+
+.vegetable-wishlist.liked {
+  color: #ef5350;
+
+  background: #fff0f0;
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.vegetable-info {
+  padding: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  box-sizing: border-box;
+}
+
+.vegetable-category {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #20a852;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.vegetable-info h3 {
+  margin: 0;
+
+  color: #17221b;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  line-height: 1.35;
+
+  min-height: 23px;
+}
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.vegetable-rating {
+  width: 100%;
+
+  margin-top: 10px;
+
+  display: flex;
+  align-items: center;
+}
+
+.vegetable-rating span {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #e98b00;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+.vegetable-rating svg {
+  width: 15px;
+  height: 15px;
+
+  fill: currentColor;
+}
+
+/* =========================================================
+   STOCK AVAILABLE
+========================================================= */
+
+.vegetable-stock-available {
+  width: fit-content;
+
+  margin-top: 9px;
+
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  background: #effaf2;
+
+  color: #269447;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   OUT OF STOCK
+========================================================= */
+
+.vegetable-stock-out {
+  width: fit-content;
+
+  margin-top: 9px;
+
+  padding: 6px 10px;
+
+  border-radius: 6px;
+
+  background: #fff0f0;
+
+  color: #d32f2f;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  line-height: 1.3;
+}
+
+/* =========================================================
+   STOCK ERROR
+========================================================= */
+
+.vegetable-stock-error {
+  width: 100%;
+
+  margin-top: 9px;
+
+  padding: 7px 10px;
+
+  border-radius: 7px;
+
+  background: #fff4e5;
+
+  border: 1px solid #ffd7a3;
+
+  color: #c66a00;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.vegetable-price {
+  width: 100%;
+
+  margin-top: auto;
+
+  padding-top: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.vegetable-price > div {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+.vegetable-price strong {
+  color: #ef5b17;
+
+  font-size: 19px;
+
+  font-weight: 800;
+}
+
+.vegetable-price del {
+  color: #9aa39d;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+.add-cart-btn {
+  min-width: 72px;
+
+  height: 38px;
+
+  padding: 0 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #ff6b18;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+.add-cart-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.add-cart-btn:hover:not(:disabled) {
+  background: #ed5d0d;
+
+  transform: translateY(-1px);
+}
+
+.add-cart-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.add-cart-btn:disabled {
+  background: #b8bebb;
+
+  color: #ffffff;
+
+  cursor: not-allowed;
+
+  opacity: 0.75;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.vegetable-empty {
+  width: 100%;
+
+  min-height: 280px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ebe6;
+
+  border-radius: 20px;
+
+  box-sizing: border-box;
+}
+
+.vegetable-empty span {
+  margin-bottom: 12px;
+
+  font-size: 48px;
+}
+
+.vegetable-empty h3 {
+  margin: 0 0 6px;
+
+  color: #17221b;
+
+  font-size: 20px;
+}
+
+.vegetable-empty p {
+  margin: 0;
+
+  color: #7a857e;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.vegetable-loading {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #69766d;
+
+  text-align: center;
+}
+
+.vegetable-spinner {
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 15px;
+
+  border: 4px solid #dfeee2;
+
+  border-top-color: #20a852;
+
+  border-radius: 50%;
+
+  animation: vegetableSpin 0.8s linear infinite;
+}
+
+.vegetable-loading p {
+  margin: 0;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+@keyframes vegetableSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .vegetables-page {
+    padding: 18px;
+  }
+
+  .vegetable-hero {
+    min-height: 210px;
+
+    padding: 32px;
+  }
+
+  .vegetable-hero-emoji {
+    width: 120px;
+    height: 120px;
+
+    font-size: 65px;
+  }
+
+  .vegetable-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .vegetables-page {
+    padding: 12px;
+  }
+
+  .vegetable-hero {
+    min-height: auto;
+
+    padding: 26px 22px;
+
+    border-radius: 18px;
+  }
+
+  .vegetable-hero h1 {
+    font-size: 34px;
+  }
+
+  .vegetable-hero p {
+    font-size: 14px;
+  }
+
+  .vegetable-hero-emoji {
+    display: none;
+  }
+
+  .vegetable-toolbar {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+  .vegetable-search {
+    width: 100%;
+  }
+
+  .vegetable-result-count {
+    padding-left: 3px;
+  }
+
+  .vegetable-categories {
+    margin-bottom: 20px;
+  }
+
+  .vegetable-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .vegetable-card {
+    border-radius: 15px;
+  }
+
+  .vegetable-image {
+    height: 175px;
+  }
+
+  .vegetable-info {
+    padding: 13px;
+  }
+
+  .vegetable-category {
+    font-size: 9px;
+  }
+
+  .vegetable-info h3 {
+    font-size: 14px;
+  }
+
+  .vegetable-rating {
+    margin-top: 7px;
+  }
+
+  .vegetable-rating span {
+    font-size: 11px;
+  }
+
+  .vegetable-stock-available,
+  .vegetable-stock-out {
+    margin-top: 7px;
+
+    padding: 4px 7px;
+
+    font-size: 10px;
+  }
+
+  .vegetable-stock-error {
+    margin-top: 7px;
+
+    padding: 6px 7px;
+
+    font-size: 9px;
+  }
+
+  .vegetable-price {
+    padding-top: 11px;
+
+    gap: 6px;
+  }
+
+  .vegetable-price strong {
+    font-size: 16px;
+  }
+
+  .vegetable-price del {
+    font-size: 10px;
+  }
+
+  .add-cart-btn {
+    min-width: 58px;
+
+    height: 34px;
+
+    padding: 0 9px;
+
+    font-size: 11px;
+  }
+
+  .add-cart-btn svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .vegetable-wishlist {
+    width: 34px;
+    height: 34px;
+
+    top: 9px;
+    right: 9px;
+
+    font-size: 15px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .vegetable-products {
+    grid-template-columns: 1fr;
+  }
+
+  .vegetable-image {
+    height: 210px;
+  }
+
+  .vegetable-info h3 {
+    font-size: 16px;
+  }
+
+  .vegetable-price strong {
+    font-size: 18px;
+  }
+
+  .add-cart-btn {
+    min-width: 70px;
+
+    height: 36px;
+
+    font-size: 12px;
+  }
+}
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"] .vegetables-page {
+  background: #0b1120;
+  color: #f8fafc;
+}
+
+/* =========================================================
+   DARK HERO
+========================================================= */
+
+[data-theme="dark"] .vegetable-hero {
+  background: linear-gradient(135deg, #14261a 0%, #182b1d 48%, #151e2e 100%);
+
+  border-color: #294532;
+}
+
+[data-theme="dark"] .vegetable-page-label {
+  color: #4ade80;
+}
+
+[data-theme="dark"] .vegetable-hero h1 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .vegetable-hero p {
+  color: #aeb8c7;
+}
+
+[data-theme="dark"] .vegetable-hero-emoji {
+  background: rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+}
+
+/* =========================================================
+   DARK ERROR
+========================================================= */
+
+[data-theme="dark"] .vegetable-error {
+  background: #35191c;
+
+  border-color: #6b292d;
+
+  color: #ff8b8b;
+}
+
+/* =========================================================
+   DARK SEARCH
+========================================================= */
+
+[data-theme="dark"] .vegetable-search {
+  background: #111827;
+
+  border-color: #293548;
+}
+
+[data-theme="dark"] .vegetable-search:focus-within {
+  border-color: #25b858;
+
+  box-shadow: 0 0 0 3px rgba(37, 184, 88, 0.12);
+}
+
+[data-theme="dark"] .vegetable-search svg {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .vegetable-search input {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .vegetable-search input::placeholder {
+  color: #64748b;
+}
+
+[data-theme="dark"] .vegetable-result-count {
+  color: #aeb8c7;
+}
+
+/* =========================================================
+   DARK CATEGORIES
+========================================================= */
+
+[data-theme="dark"] .vegetable-category-btn {
+  background: #151e2e;
+
+  border-color: #293548;
+
+  color: #c0c9d5;
+}
+
+[data-theme="dark"] .vegetable-category-btn:hover {
+  background: #17261e;
+
+  border-color: #25b858;
+
+  color: #5ee58b;
+}
+
+[data-theme="dark"] .vegetable-category-btn.active {
+  background: #20a852;
+
+  border-color: #20a852;
+
+  color: #ffffff;
+}
+
+/* =========================================================
+   DARK PRODUCT CARD
+========================================================= */
+
+[data-theme="dark"] .vegetable-card {
+  background: #151e2e;
+
+  border-color: #293548;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+}
+
+[data-theme="dark"] .vegetable-card:hover {
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================================
+   DARK IMAGE
+========================================================= */
+
+[data-theme="dark"] .vegetable-image {
+  background: #111827;
+}
+
+/* =========================================================
+   DARK WISHLIST
+========================================================= */
+
+[data-theme="dark"] .vegetable-wishlist {
+  background: rgba(17, 24, 39, 0.94);
+
+  color: #aeb8c7;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .vegetable-wishlist:hover {
+  color: #ff6b6b;
+}
+
+[data-theme="dark"] .vegetable-wishlist.liked {
+  color: #ff6b6b;
+
+  background: #35191c;
+}
+
+/* =========================================================
+   DARK PRODUCT INFO
+========================================================= */
+
+[data-theme="dark"] .vegetable-category {
+  color: #4ade80;
+}
+
+[data-theme="dark"] .vegetable-info h3 {
+  color: #f8fafc;
+}
+
+/* =========================================================
+   DARK RATING
+========================================================= */
+
+[data-theme="dark"] .vegetable-rating span {
+  color: #fbbf24;
+}
+
+/* =========================================================
+   DARK STOCK AVAILABLE
+========================================================= */
+
+[data-theme="dark"] .vegetable-stock-available {
+  background: #143522;
+
+  color: #5ee58b;
+}
+
+/* =========================================================
+   DARK OUT OF STOCK
+========================================================= */
+
+[data-theme="dark"] .vegetable-stock-out {
+  background: #35191c;
+
+  color: #ff8585;
+}
+
+/* =========================================================
+   DARK STOCK ERROR
+========================================================= */
+
+[data-theme="dark"] .vegetable-stock-error {
+  background: #352815;
+
+  border-color: #654b21;
+
+  color: #ffbd63;
+}
+
+/* =========================================================
+   DARK PRICE
+========================================================= */
+
+[data-theme="dark"] .vegetable-price strong {
+  color: #fb923c;
+}
+
+[data-theme="dark"] .vegetable-price del {
+  color: #7f8a98;
+}
+
+/* =========================================================
+   DARK ADD CART
+========================================================= */
+
+[data-theme="dark"] .add-cart-btn {
+  background: #ff6b18;
+
+  color: #ffffff;
+}
+
+[data-theme="dark"] .add-cart-btn:hover:not(:disabled) {
+  background: #ed5d0d;
+}
+
+[data-theme="dark"] .add-cart-btn:disabled {
+  background: #4b5563;
+
+  color: #d1d5db;
+}
+
+/* =========================================================
+   DARK EMPTY
+========================================================= */
+
+[data-theme="dark"] .vegetable-empty {
+  background: #151e2e;
+
+  border-color: #293548;
+}
+
+[data-theme="dark"] .vegetable-empty h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .vegetable-empty p {
+  color: #9aa6b5;
+}
+
+/* =========================================================
+   DARK LOADING
+========================================================= */
+
+[data-theme="dark"] .vegetable-loading {
+  color: #aeb8c7;
+}
+
+[data-theme="dark"] .vegetable-spinner {
+  border-color: #293d30;
+
+  border-top-color: #20a852;
+}

@@ -1,0 +1,1171 @@
+/* =========================================
+   NAVBAR
+========================================= */
+
+.navbar {
+  width: 100%;
+  min-height: 72px;
+  position: -webkit-sticky; /* Safari browser ke liye */
+  position: sticky;
+  top: 0; /* Screen ke top se gap zero rakhne ke liye */
+  z-index: 1000; /* Nav bar ko baki content ke upar rakhne ke liye */
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 24px;
+
+  background: var(--navbar-bg, #ffffff);
+
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+
+  color: var(--text-primary, #1f2937);
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* =========================================
+   LEFT
+========================================= */
+
+.navbar-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+/* =========================================
+   MENU BUTTON
+========================================= */
+
+.navbar-menu-btn {
+  width: 40px;
+  height: 40px;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--text-primary, #1f2937);
+
+  font-size: 21px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.navbar-menu-btn:hover {
+  background: var(--hover-bg, #f0fdf4);
+
+  color: var(--primary-color, #43a047);
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.navbar-search {
+  width: 320px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 14px;
+
+  background: var(--input-bg, #f9fafb);
+
+  border: 1px solid var(--border-color, #e5e7eb);
+
+  border-radius: 10px;
+
+  color: var(--text-secondary, #9ca3af);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.navbar-search:focus-within {
+  border-color: var(--primary-color, #43a047);
+
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+.navbar-search svg {
+  flex-shrink: 0;
+
+  font-size: 17px;
+}
+
+.navbar-search input {
+  width: 100%;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: var(--text-primary, #1f2937);
+
+  font-size: 13px;
+}
+
+.navbar-search input::placeholder {
+  color: #9ca3af;
+}
+
+/* =========================================
+   RIGHT
+========================================= */
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+/* =========================================
+   COMMON ICON BUTTON
+========================================= */
+
+.navbar-icon,
+.navbar-cart {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--text-secondary, #6b7280);
+
+  font-size: 19px;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.navbar-icon:hover,
+.navbar-cart:hover {
+  background: var(--hover-bg, #f0fdf4);
+
+  color: var(--primary-color, #43a047);
+
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   CART COUNT
+========================================= */
+
+.navbar-cart-count {
+  position: absolute;
+
+  top: 2px;
+  right: 1px;
+
+  min-width: 17px;
+  height: 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 4px;
+
+  border-radius: 50%;
+
+  background: #e53935;
+
+  color: #ffffff;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+/* =========================================
+   NOTIFICATION
+========================================= */
+
+/* =========================================
+   NOTIFICATION COUNT
+========================================= */
+
+.notification-dot {
+  position: absolute;
+
+  top: 1px;
+  right: 0px;
+
+  min-width: 17px;
+  height: 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 4px;
+
+  border-radius: 50%;
+
+  background: #e53935;
+
+  border: 2px solid var(--navbar-bg, #ffffff);
+
+  color: #ffffff;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  line-height: 1;
+
+  z-index: 5;
+
+  box-sizing: border-box;
+}
+
+/* =========================================
+   THEME TOGGLE
+========================================= */
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--border-color, #e5e7eb);
+
+  border-radius: 10px;
+
+  background: var(--card-bg, #ffffff);
+
+  color: var(--text-secondary, #6b7280);
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--primary-color, #43a047);
+
+  background: var(--hover-bg, #f0fdf4);
+
+  color: var(--primary-color, #43a047);
+
+  transform: rotate(8deg);
+
+  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.12);
+}
+
+/* =========================================
+   PROFILE
+========================================= */
+
+.profile {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-left: 5px;
+
+  padding-left: 14px;
+
+  border-left: 1px solid var(--border-color, #e5e7eb);
+}
+
+.profile-avatar {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #e8f5e9;
+
+  color: #2e7d32;
+
+  font-size: 17px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 70px;
+}
+
+.profile-info strong {
+  color: var(--text-primary, #1f2937);
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.profile-info span {
+  margin-top: 2px;
+
+  color: var(--text-secondary, #9ca3af);
+
+  font-size: 10px;
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+[data-theme="dark"] .navbar {
+  background: var(--navbar-bg, #111827);
+
+  border-bottom-color: #1e293b;
+
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .navbar-menu-btn {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .navbar-menu-btn:hover {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .navbar-search {
+  background: #0f172a;
+
+  border-color: #334155;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .navbar-search input {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .navbar-search input::placeholder {
+  color: #64748b;
+}
+
+[data-theme="dark"] .navbar-icon,
+[data-theme="dark"] .navbar-cart {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .navbar-icon:hover,
+[data-theme="dark"] .navbar-cart:hover {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .notification-dot {
+  border-color: #111827;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: #0f172a;
+
+  border-color: #334155;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+  background: #183b20;
+
+  border-color: #315f35;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .profile {
+  border-left-color: #1e293b;
+}
+
+[data-theme="dark"] .profile-avatar {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .profile-info strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .profile-info span {
+  color: #64748b;
+}
+
+/* =========================================
+   LARGE TABLET
+========================================= */
+
+@media (max-width: 1100px) {
+  .navbar-search {
+    width: 250px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .profile {
+    padding-left: 10px;
+  }
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 768px) {
+  .navbar {
+    min-height: 64px;
+
+    padding: 10px 16px;
+  }
+
+  .navbar-menu-btn {
+    display: flex;
+  }
+
+  .navbar-search {
+    width: 260px;
+  }
+
+  .profile {
+    display: none;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 560px) {
+  .navbar {
+    gap: 10px;
+
+    padding: 10px 12px;
+  }
+
+  .navbar-left {
+    flex: 1;
+
+    gap: 8px;
+  }
+
+  .navbar-search {
+    flex: 1;
+
+    width: auto;
+
+    height: 40px;
+
+    padding: 0 11px;
+  }
+
+  .navbar-search input {
+    font-size: 12px;
+  }
+
+  .navbar-right {
+    gap: 4px;
+  }
+
+  .navbar-icon,
+  .navbar-cart,
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    font-size: 17px;
+  }
+
+  .navbar-menu-btn {
+    width: 36px;
+    height: 36px;
+
+    font-size: 20px;
+  }
+
+  .navbar-cart-count {
+    top: 0;
+    right: 0;
+
+    min-width: 15px;
+    height: 15px;
+
+    font-size: 8px;
+  }
+
+  .notification-dot {
+    top: 6px;
+    right: 6px;
+
+    width: 5px;
+    height: 5px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 400px) {
+  .navbar {
+    padding: 9px 10px;
+  }
+
+  .navbar-search {
+    max-width: 180px;
+  }
+
+  .navbar-search input {
+    font-size: 11px;
+  }
+
+  .navbar-search svg {
+    font-size: 15px;
+  }
+
+  .navbar-icon,
+  .navbar-cart,
+  .theme-toggle,
+  .navbar-menu-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .navbar-right {
+    gap: 2px;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL
+========================================= */
+
+@media (max-width: 340px) {
+  .navbar-search input {
+    display: none;
+  }
+
+  .navbar-search {
+    flex: 0 0 36px;
+
+    width: 36px;
+
+    justify-content: center;
+
+    padding: 0;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.navbar-menu-btn:focus-visible,
+.navbar-icon:focus-visible,
+.navbar-cart:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid #43a047;
+
+  outline-offset: 2px;
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-menu-btn,
+  .navbar-icon,
+  .navbar-cart,
+  .theme-toggle {
+    transition: none;
+  }
+}
+/* =========================================
+   NOTIFICATION WRAPPER
+========================================= */
+
+.navbar-notification-wrapper {
+  position: relative;
+}
+
+/* =========================================
+   NOTIFICATION DROPDOWN / MODAL
+========================================= */
+
+.notification-dropdown {
+  position: fixed;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: min(460px, calc(100vw - 30px));
+
+  max-height: min(600px, calc(100vh - 40px));
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.18);
+
+  z-index: 5000;
+
+  animation: notification-popup 0.22s ease;
+}
+
+/* =========================================
+   POPUP ANIMATION
+========================================= */
+
+@keyframes notification-popup {
+  from {
+    opacity: 0;
+
+    transform: translate(-50%, -47%) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* =========================================
+   NOTIFICATION HEADER
+========================================= */
+
+.notification-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.notification-header > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.notification-header strong {
+  color: #172033;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.notification-header span {
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+.notification-header button {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #f8fafc;
+
+  color: #64748b;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.notification-header button:hover {
+  background: #fee2e2;
+
+  color: #dc2626;
+}
+
+/* =========================================
+   ALERT TITLE
+========================================= */
+
+.notification-alert-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 15px 18px 8px;
+
+  padding: 10px 12px;
+
+  border-radius: 9px;
+
+  background: #fff7ed;
+
+  color: #ea580c;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.notification-alert-title svg {
+  font-size: 17px;
+}
+
+/* =========================================
+   NOTIFICATION LIST
+========================================= */
+
+.notification-list {
+  padding-bottom: 8px;
+}
+
+/* =========================================
+   NOTIFICATION ITEM
+========================================= */
+
+.notification-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 0 12px;
+
+  padding: 12px 7px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+/* =========================================
+   PRODUCT ICON
+========================================= */
+
+.notification-product-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #f1f5f9;
+
+  color: #64748b;
+
+  font-size: 20px;
+}
+
+.notification-product-icon img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================
+   PRODUCT INFO
+========================================= */
+
+.notification-product-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.notification-product-info strong {
+  overflow: hidden;
+
+  color: #172033;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.notification-product-info span {
+  color: #94a3b8;
+
+  font-size: 10px;
+}
+
+/* =========================================
+   OUT OF STOCK LABEL
+========================================= */
+
+.out-of-stock-label {
+  flex-shrink: 0;
+
+  padding: 5px 8px;
+
+  border-radius: 20px;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+/* =========================================
+   EMPTY NOTIFICATION
+========================================= */
+
+.notification-empty {
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+}
+
+.notification-empty-icon {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 13px;
+
+  border-radius: 50%;
+
+  background: #dcfce7;
+
+  color: #16a34a;
+
+  font-size: 25px;
+}
+
+.notification-empty strong {
+  color: #172033;
+
+  font-size: 14px;
+}
+
+.notification-empty span {
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   LOADING
+========================================= */
+
+.notification-loading {
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.notification-spinner {
+  width: 30px;
+  height: 30px;
+
+  border: 3px solid #e2e8f0;
+
+  border-top-color: #43a047;
+
+  border-radius: 50%;
+
+  animation: notification-spin 0.8s linear infinite;
+}
+
+@keyframes notification-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.notification-footer {
+  padding: 12px 18px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: #f8fafc;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+[data-theme="dark"] .notification-dropdown {
+  background: #111827;
+
+  border-color: #263244;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="dark"] .notification-header {
+  border-bottom-color: #263244;
+}
+
+[data-theme="dark"] .notification-header strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .notification-header span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .notification-header button {
+  background: #1e293b;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .notification-header button:hover {
+  background: #3b1515;
+
+  color: #f87171;
+}
+
+[data-theme="dark"] .notification-alert-title {
+  background: #3b2515;
+
+  color: #fb923c;
+}
+
+[data-theme="dark"] .notification-item {
+  border-bottom-color: #1e293b;
+}
+
+[data-theme="dark"] .notification-product-icon {
+  background: #1e293b;
+
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .notification-product-info strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .notification-product-info span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .out-of-stock-label {
+  background: #3b1515;
+
+  color: #f87171;
+}
+
+[data-theme="dark"] .notification-empty-icon {
+  background: #183b20;
+
+  color: #81c784;
+}
+
+[data-theme="dark"] .notification-empty strong {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .notification-empty span {
+  color: #64748b;
+}
+
+[data-theme="dark"] .notification-loading {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .notification-spinner {
+  border-color: #334155;
+
+  border-top-color: #4caf50;
+}
+
+[data-theme="dark"] .notification-footer {
+  background: #0f172a;
+
+  border-top-color: #263244;
+
+  color: #64748b;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 560px) {
+  .notification-dropdown {
+    width: calc(100vw - 24px);
+
+    max-height: calc(100vh - 30px);
+
+    border-radius: 15px;
+  }
+
+  .notification-header {
+    padding: 16px;
+  }
+
+  .notification-item {
+    margin: 0 9px;
+
+    padding: 11px 5px;
+  }
+
+  .notification-product-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .out-of-stock-label {
+    font-size: 8px;
+
+    padding: 4px 6px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-dropdown,
+  .notification-spinner {
+    animation: none;
+  }
+}

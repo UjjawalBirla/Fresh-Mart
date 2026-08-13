@@ -1,0 +1,384 @@
+.image-upload {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* =========================================
+   UPLOAD BOX
+========================================= */
+
+.image-upload-box {
+  width: 100%;
+  min-height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: var(--card-bg, #ffffff);
+
+  border: 2px dashed var(--border-color, #d1d5db);
+  border-radius: 14px;
+
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.image-upload-box:hover {
+  border-color: #43a047;
+  background: var(--hover-bg, #f8fff8);
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.image-upload-empty {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+/* =========================================
+   ICON
+========================================= */
+
+.image-upload-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border-radius: 15px;
+
+  background: #e8f5e9;
+
+  font-size: 28px;
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.image-upload-content h3 {
+  margin: 0;
+
+  color: var(--text-primary, #1f2937);
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.image-upload-content p {
+  margin: 7px 0 15px;
+
+  color: var(--text-secondary, #6b7280);
+
+  font-size: 12px;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.image-upload-button {
+  min-height: 40px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #43a047;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.image-upload-button:hover:not(:disabled) {
+  background: #388e3c;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 15px rgba(67, 160, 71, 0.2);
+}
+
+.image-upload-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.image-upload-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+/* =========================================
+   PREVIEW
+========================================= */
+
+.image-upload-preview {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.image-upload-preview img {
+  width: 180px;
+  height: 160px;
+
+  flex-shrink: 0;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-color, #e5e7eb);
+
+  background: #f3f4f6;
+}
+
+/* =========================================
+   PREVIEW INFO
+========================================= */
+
+.image-upload-preview-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.image-upload-success {
+  margin: 0;
+
+  color: #2e7d32;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* =========================================
+   REMOVE BUTTON
+========================================= */
+
+.image-upload-remove {
+  min-height: 36px;
+
+  padding: 0 14px;
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.image-upload-remove:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+/* =========================================
+   ERROR
+========================================= */
+
+.image-upload-error {
+  width: 100%;
+
+  padding: 11px 13px;
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+[data-theme="dark"] .image-upload-box {
+  background: #111827;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .image-upload-box:hover {
+  border-color: #66bb6a;
+  background: #14261a;
+}
+
+[data-theme="dark"] .image-upload-icon {
+  background: #183b20;
+}
+
+[data-theme="dark"] .image-upload-content h3 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .image-upload-content p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .image-upload-preview img {
+  border-color: #334155;
+  background: #1e293b;
+}
+
+[data-theme="dark"] .image-upload-success {
+  color: #81c784;
+}
+
+[data-theme="dark"] .image-upload-remove {
+  background: #3b1515;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+[data-theme="dark"] .image-upload-remove:hover {
+  background: #451a1a;
+  border-color: #991b1b;
+  color: #fecaca;
+}
+
+[data-theme="dark"] .image-upload-error {
+  background: #3b1515;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 700px) {
+  .image-upload-box {
+    min-height: 200px;
+    padding: 16px;
+  }
+
+  .image-upload-preview img {
+    width: 150px;
+    height: 135px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+  .image-upload-preview {
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .image-upload-preview img {
+    width: 100%;
+    max-width: 280px;
+    height: 180px;
+  }
+
+  .image-upload-preview-info {
+    align-items: center;
+  }
+
+  .image-upload-content h3 {
+    font-size: 15px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 380px) {
+  .image-upload-box {
+    min-height: 180px;
+    padding: 14px;
+  }
+
+  .image-upload-icon {
+    width: 50px;
+    height: 50px;
+
+    font-size: 24px;
+  }
+
+  .image-upload-content p {
+    font-size: 11px;
+  }
+
+  .image-upload-preview img {
+    height: 160px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+.image-upload-button:focus-visible,
+.image-upload-remove:focus-visible {
+  outline: 2px solid #43a047;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .image-upload-box,
+  .image-upload-button,
+  .image-upload-remove {
+    transition: none;
+  }
+}
