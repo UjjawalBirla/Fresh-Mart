@@ -27,7 +27,7 @@ import ImageLoader from "../../components/ImageLoader/ImageLoader";
 
 import "./Home.css";
 
-import searchAliases from "../../data/searchAliases";
+import searchAliases from "../../Data/searchAliases";
 
 // ======================================================
 // HOME
