@@ -15,9 +15,11 @@ import {
 
 import { useTheme } from "../../contexts/ThemeContext";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useCart } from "../../contexts/CartContext";
+
+import { useAuth } from "../../contexts/AuthContext";
 
 import { collection, getDocs } from "firebase/firestore";
 
@@ -43,6 +45,10 @@ function Navbar({ openSidebar }) {
   const { cartCount } = useCart();
 
   const { theme, toggleTheme } = useTheme();
+
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
 
   // =========================================
   // FETCH OUT OF STOCK PRODUCTS
@@ -120,6 +126,14 @@ function Navbar({ openSidebar }) {
 
   const closeNotifications = () => {
     setNotificationOpen(false);
+  };
+
+  const handleLogout = async () => {
+    const result = await logout();
+
+    if (result?.success) {
+      navigate("/login", { replace: true });
+    }
   };
 
   return (
@@ -313,6 +327,15 @@ function Navbar({ openSidebar }) {
             <span>Administrator</span>
           </div>
         </div>
+
+        <button
+          type="button"
+          className="logout-btn"
+          onClick={handleLogout}
+          aria-label="Logout"
+        >
+          Logout
+        </button>
       </div>
     </header>
   );

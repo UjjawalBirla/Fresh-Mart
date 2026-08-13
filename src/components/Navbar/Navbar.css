@@ -361,6 +361,32 @@
   font-size: 10px;
 }
 
+.logout-btn {
+  border: 1px solid #b7d9b8;
+  background: linear-gradient(180deg, #eaf7eb 0%, #dfeee0 100%);
+  color: #1d5b2b;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+  box-shadow: 0 3px 10px rgba(90, 146, 98, 0.12);
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #e3f5e4 0%, #d4ebd7 100%);
+  box-shadow: 0 6px 14px rgba(90, 146, 98, 0.18);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
 /* =========================================
    DARK THEME
 ========================================= */
