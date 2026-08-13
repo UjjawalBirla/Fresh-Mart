@@ -1,23 +1,15 @@
 import { initializeApp } from "firebase/app";
-
 import { getAuth } from "firebase/auth";
-
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB9asThRaQb84Hp0eLL1KmESxaOVBh7AUM",
-
-  authDomain: "freshmart-edef5.firebaseapp.com",
-
-  projectId: "freshmart-edef5",
-
-  storageBucket: "freshmart-edef5.firebasestorage.app",
-
-  messagingSenderId: "512605655081",
-
-  appId: "1:512605655081:web:875599173a44b397384c38",
-
-  measurementId: "G-M1ZDG56VXH",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // =========================================
