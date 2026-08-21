@@ -1,543 +1,280 @@
 import { useEffect, useState } from "react";
-
 import {
-  FiSettings,
-  FiShoppingBag,
-  FiEdit3,
-  FiTrash2,
-  FiClipboard,
-  FiArrowRight,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+import {
   FiUsers,
-  FiUser,
-  FiMail,
+  FiTrash2,
   FiShield,
+  FiCheckCircle,
+  FiAlertTriangle,
+  FiSettings,
   FiRefreshCw,
   FiX,
-  FiAlertTriangle,
+  FiInfo,
+  FiMail,
 } from "react-icons/fi";
-
-import { useNavigate } from "react-router-dom";
-
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-
 import { db } from "../../Firebase/Firebase";
-
-import "./Settings.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Settings() {
-  const navigate = useNavigate();
-
-  // =========================================
-  // USER STATES
-  // =========================================
-
+  const { user } = useAuth();
   const [users, setUsers] = useState([]);
-
-  const [usersLoading, setUsersLoading] = useState(true);
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  const [deleteLoading, setDeleteLoading] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [deleting, setDeleting] = useState(false);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // =========================================
-  // GET USERS
-  // =========================================
-
-  const fetchUsers = async (showRefresh = false) => {
-    try {
-      setError("");
-
-      if (showRefresh) {
-        setRefreshing(true);
-      } else {
-        setUsersLoading(true);
-      }
-
-      const usersRef = collection(db, "users");
-
-      const snapshot = await getDocs(usersRef);
-
-      const usersData = snapshot.docs.map((userDoc) => {
-        const data = userDoc.data();
-
-        return {
-          id: userDoc.id,
-
-          uid: data.uid || userDoc.id,
-
-          name: data.name || data.displayName || "Unknown User",
-
-          email: data.email || "No email",
-
-          role: data.role || "user",
-        };
-      });
-
-      setUsers(usersData);
-    } catch (fetchError) {
-      console.error("Settings Users Error:", fetchError);
-
-      setError("Unable to load users. Please try again.");
-    } finally {
-      setUsersLoading(false);
-
-      setRefreshing(false);
-    }
-  };
-
-  // =========================================
-  // INITIAL LOAD
-  // =========================================
-
   useEffect(() => {
-    fetchUsers();
+    const usersQuery = query(collection(db, "users"));
+    const unsubscribe = onSnapshot(
+      usersQuery,
+      (snapshot) => {
+        const userList = snapshot.docs.map((userDoc) => ({
+          id: userDoc.id,
+          ...userDoc.data(),
+        }));
+
+        setUsers(userList);
+        setLoading(false);
+      },
+      (firebaseError) => {
+        console.error("Users load error:", firebaseError);
+        setError("Unable to load user accounts.");
+        setLoading(false);
+      },
+    );
+
+    return () => unsubscribe();
   }, []);
 
-  // =========================================
-  // DELETE CONFIRMATION
-  // =========================================
-
-  const openDeleteConfirmation = (user) => {
-    // =======================================
-    // ADMIN PROTECTION
-    // =======================================
-
-    if (user.role === "admin") {
-      setError("Admin accounts cannot be deleted from Settings.");
-
-      return;
-    }
-
-    setSelectedUser(user);
+  const openDeleteModal = (targetUser) => {
+    setSelectedUser(targetUser);
+    setDeleteModalOpen(true);
+    setMessage("");
+    setError("");
   };
 
-  // =========================================
-  // CLOSE CONFIRMATION
-  // =========================================
-
-  const closeDeleteConfirmation = () => {
-    if (deleteLoading) {
-      return;
-    }
-
+  const closeDeleteModal = () => {
+    if (deleting) return;
+    setDeleteModalOpen(false);
     setSelectedUser(null);
   };
 
-  // =========================================
-  // DELETE USER
-  // =========================================
-
   const handleDeleteUser = async () => {
-    if (!selectedUser) {
+    if (!selectedUser?.id) return;
+    if (selectedUser.id === user?.uid) {
+      setError("You cannot delete your own active administrator account.");
       return;
     }
 
     try {
-      setDeleteLoading(true);
-
+      setDeleting(true);
       setError("");
-
-      // =====================================
-      // DELETE FIRESTORE USER DOCUMENT
-      // =====================================
 
       await deleteDoc(doc(db, "users", selectedUser.id));
 
-      // =====================================
-      // REMOVE FROM UI
-      // =====================================
-
-      setUsers((currentUsers) =>
-        currentUsers.filter((user) => user.id !== selectedUser.id),
+      setMessage(
+        `User account "${selectedUser.name || selectedUser.email}" deleted successfully.`,
       );
-
-      setSelectedUser(null);
-    } catch (deleteError) {
-      console.error("Delete User Error:", deleteError);
-
-      setError("Unable to delete user. Please try again.");
+      closeDeleteModal();
+    } catch (err) {
+      console.error("Delete user error:", err);
+      setError(err.message || "Unable to delete user.");
     } finally {
-      setDeleteLoading(false);
+      setDeleting(false);
     }
   };
 
-  // =========================================
-  // ORDER MANAGEMENT
-  // =========================================
-
-  const orderActions = [
-    {
-      title: "Manage Orders",
-
-      description: "View and manage all customer orders from the admin panel.",
-
-      icon: <FiClipboard />,
-
-      action: () => navigate("/admin/orders"),
-
-      button: "Manage Orders",
-    },
-
-    {
-      title: "Update Order",
-
-      description:
-        "Update order status, customer details and order information.",
-
-      icon: <FiEdit3 />,
-
-      action: () => navigate("/admin/orders"),
-
-      button: "Update Order",
-    },
-
-    {
-      title: "Delete Order",
-
-      description: "Remove unwanted or cancelled orders from the system.",
-
-      icon: <FiTrash2 />,
-
-      action: () => navigate("/admin/orders"),
-
-      button: "Delete Order",
-    },
-  ];
-
-  // =========================================
-  // UI
-  // =========================================
-
   return (
-    <div className="settings-page">
-      {/* =====================================
-          HEADER
-      ====================================== */}
-
-      <div className="settings-header">
-        <div className="settings-header-icon">
-          <FiSettings />
-        </div>
-
-        <div>
-          <span className="settings-label">ADMIN PANEL</span>
-
-          <h1>Settings</h1>
-
-          <p>Manage FreshMart orders and users.</p>
+    <div className="space-y-8 pb-16 animate-rise  ml-5">
+      {/* Header */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-6 dark:border-slate-800">
+        <div className=" ml-5">
+          <span className="section-label">System Administration</span>
+          <h1 className="font-display text-3xl font-black text-slate-800 dark:text-white md:text-4xl">
+            Store Settings ⚙️
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Configure system rules, oversee staff privileges and manage user accounts.
+          </p>
         </div>
       </div>
 
-      {/* =====================================
-          ERROR
-      ====================================== */}
-
-      {error && (
-        <div className="settings-error">
-          <FiAlertTriangle />
-
-          <span>{error}</span>
-
-          <button type="button" onClick={() => setError("")}>
-            <FiX />
-          </button>
+      {message && (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-xs font-bold text-emerald-800 shadow-xs dark:border-emerald-800/50 dark:bg-emerald-950/40 dark:text-emerald-300">
+          {message}
         </div>
       )}
 
-      {/* =====================================
-          ORDER MANAGEMENT
-      ====================================== */}
+      {error && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-bold text-red-700 shadow-xs dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
+          {error}
+        </div>
+      )}
 
-      <section className="settings-section">
-        <div className="settings-section-header">
-          <div className="settings-section-icon">
-            <FiShoppingBag />
+      {/* System Settings & Actions */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="card p-6 space-y-3 shadow-lg  ml-5">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-market-lime/60 text-market-leaf text-2xl dark:bg-market-leaf/30 dark:text-market-lime">
+            <FiRefreshCw />
           </div>
+          <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white">
+            Sync Inventory
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Realtime Firestore listener connects live store updates directly to customer carts.
+          </p>
+          <div className="pt-2">
+            <span className="badge-success text-[11px]">
+              <FiCheckCircle /> Operational
+            </span>
+          </div>
+        </div>
 
+        <div className="card p-6 space-y-3 shadow-lg">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-sky-600 text-2xl dark:bg-sky-950/50 dark:text-sky-400">
+            <FiShield />
+          </div>
+          <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white">
+            Admin Auth Policy
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Role-based route protection enforces administrative barriers for dashboard operations.
+          </p>
+          <div className="pt-2">
+            <span className="badge-info text-[11px]">
+              <FiShield /> Protected
+            </span>
+          </div>
+        </div>
+
+        <div className="card p-6 space-y-3 shadow-lg">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-amber-600 text-2xl dark:bg-amber-950/50 dark:text-amber-400">
+            <FiInfo />
+          </div>
+          <h3 className="font-display text-lg font-bold text-slate-800 dark:text-white">
+            Order Lifecycle
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Standard status flow: Pending ➔ Confirmed ➔ Preparing ➔ Shipped ➔ Delivered.
+          </p>
+          <div className="pt-2">
+            <span className="badge-warning text-[11px]">Active Policy</span>
+          </div>
+        </div>
+      </div>
+
+      {/* User Accounts Management Section */}
+      <section className="card p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-slate-800">
           <div>
-            <h2>Order Management</h2>
-
-            <p>Manage customer orders and order operations.</p>
+            <h2 className="font-display text-2xl font-black text-slate-800 dark:text-white">
+              User Accounts ({users.length})
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Manage account permissions or remove inactive user documents.
+            </p>
           </div>
         </div>
 
-        <div className="settings-actions">
-          {orderActions.map((item) => (
-            <div className="settings-action-card" key={item.title}>
-              <div className="settings-action-icon">{item.icon}</div>
-
-              <div className="settings-action-content">
-                <h3>{item.title}</h3>
-
-                <p>{item.description}</p>
-              </div>
-
-              <button
-                type="button"
-                className="settings-action-btn"
-                onClick={item.action}
-              >
-                {item.button}
-
-                <FiArrowRight />
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =====================================
-          USER MANAGEMENT
-      ====================================== */}
-
-      <section className="settings-section">
-        {/* SECTION HEADER */}
-
-        <div className="settings-section-header">
-          <div className="settings-section-icon">
-            <FiUsers />
-          </div>
-
-          <div>
-            <h2>User Management</h2>
-
-            <p>View and manage registered FreshMart users.</p>
-          </div>
-
-          {/* REFRESH */}
-
-          <button
-            type="button"
-            className="settings-refresh-btn"
-            onClick={() => fetchUsers(true)}
-            disabled={refreshing}
-            title="Refresh users"
-          >
-            <FiRefreshCw
-              className={refreshing ? "settings-refresh-spin" : ""}
-            />
-          </button>
-        </div>
-
-        {/* ===================================
-            USER COUNT
-        ==================================== */}
-
-        <div className="settings-user-count">
-          <FiUsers />
-
-          <span>Total Registered Users</span>
-
-          <strong>{users.length}</strong>
-        </div>
-
-        {/* ===================================
-            LOADING
-        ==================================== */}
-
-        {usersLoading ? (
-          <div className="settings-users-loading">
-            <div className="settings-spinner"></div>
-
-            <span>Loading users...</span>
-          </div>
-        ) : users.length === 0 ? (
-          /* =================================
-              NO USERS
-          ================================= */
-
-          <div className="settings-no-users">
-            <FiUsers />
-
-            <h3>No Users Found</h3>
-
-            <p>Registered users will appear here.</p>
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <div className="h-8 w-8 animate-spin rounded-full border-3 border-market-leaf border-t-transparent" />
           </div>
         ) : (
-          /* =================================
-              USERS
-          ================================= */
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {users.map((u) => {
+              const isCurrentUser = u.id === user?.uid;
+              const isAdmin = u.role === "admin";
 
-          <div className="settings-users-list">
-            {users.map((user) => (
-              <div className="settings-user-card" key={user.id}>
-                {/* AVATAR */}
-
-                <div className="settings-user-avatar">
-                  <FiUser />
-                </div>
-
-                {/* INFO */}
-
-                <div className="settings-user-info">
-                  <div className="settings-user-name">
-                    <h3>{user.name}</h3>
-
-                    <span
-                      className={
-                        user.role === "admin"
-                          ? "settings-user-role admin"
-                          : "settings-user-role"
-                      }
-                    >
-                      {user.role === "admin" ? "Admin" : "User"}
-                    </span>
-                  </div>
-
-                  <div className="settings-user-email">
-                    <FiMail />
-
-                    <span>{user.email}</span>
-                  </div>
-                </div>
-
-                {/* UID */}
-
-                <div className="settings-user-uid">
-                  <span>USER ID</span>
-
-                  <strong>{user.uid}</strong>
-                </div>
-
-                {/* DELETE */}
-
-                <button
-                  type="button"
-                  className="settings-delete-user"
-                  onClick={() => openDeleteConfirmation(user)}
-                  disabled={user.role === "admin"}
-                  title={
-                    user.role === "admin"
-                      ? "Admin cannot be deleted"
-                      : "Delete user"
-                  }
+              return (
+                <div
+                  key={u.id}
+                  className="card p-5 space-y-3 shadow-md transition-all duration-300 hover:shadow-xl hover:border-market-leaf/30"
                 >
-                  <FiTrash2 />
+                  <div className="flex items-center justify-between gap-2">
+                    <strong className="truncate text-sm font-bold text-slate-800 dark:text-white">
+                      {u.name || "Unnamed"}
+                    </strong>
+                    {isAdmin ? (
+                      <span className="badge-info text-[10px]">Admin</span>
+                    ) : (
+                      <span className="badge-success text-[10px]">User</span>
+                    )}
+                  </div>
 
-                  <span>Delete</span>
-                </button>
-              </div>
-            ))}
+                  <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 truncate">
+                    <FiMail className="shrink-0" />
+                    <span className="truncate">{u.email || "No email"}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
+                    <span className="text-[11px] text-slate-400">
+                      {isCurrentUser ? "(Current User)" : `ID: ${u.id.slice(0, 6)}...`}
+                    </span>
+
+                    {!isCurrentUser && (
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-red-500 hover:text-red-700"
+                        onClick={() => openDeleteModal(u)}
+                      >
+                        <FiTrash2 />
+                        <span>Delete</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </section>
 
-      {/* =====================================
-          SYSTEM INFORMATION
-      ====================================== */}
-
-      <section className="settings-section">
-        <div className="settings-section-header">
-          <div className="settings-section-icon">
-            <FiSettings />
-          </div>
-
-          <div>
-            <h2>System Settings</h2>
-
-            <p>FreshMart admin system configuration.</p>
-          </div>
-        </div>
-
-        <div className="settings-info-card">
-          <div>
-            <span>Application</span>
-
-            <strong>FreshMart</strong>
-          </div>
-
-          <div>
-            <span>Panel</span>
-
-            <strong>Administrator</strong>
-          </div>
-
-          <div>
-            <span>Authentication</span>
-
-            <strong>Firebase</strong>
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================
-          DELETE CONFIRMATION MODAL
-      ====================================== */}
-
-      {selectedUser && (
-        <div
-          className="settings-modal-overlay"
-          onClick={closeDeleteConfirmation}
-        >
-          <div
-            className="settings-delete-modal"
-            onClick={(event) => event.stopPropagation()}
-          >
-            {/* ICON */}
-
-            <div className="settings-delete-icon">
-              <FiTrash2 />
-            </div>
-
-            {/* TITLE */}
-
-            <h2>Delete User?</h2>
-
-            {/* DESCRIPTION */}
-
-            <p>Are you sure you want to delete this user?</p>
-
-            {/* USER */}
-
-            <div className="settings-delete-user-info">
-              <div className="settings-delete-avatar">
-                <FiUser />
+      {/* Delete User Modal */}
+      {deleteModalOpen && selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-rise">
+          <div className="card w-full max-w-md p-6 sm:p-8 space-y-5 shadow-2xl">
+            <div className="flex items-center gap-3 text-red-600">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-red-100 text-2xl dark:bg-red-950/50">
+                <FiAlertTriangle />
               </div>
-
               <div>
-                <strong>{selectedUser.name}</strong>
-
-                <span>{selectedUser.email}</span>
+                <h3 className="font-display text-xl font-black text-slate-800 dark:text-white">
+                  Delete Account
+                </h3>
+                <span className="text-xs text-slate-400">Confirm permanent deletion</span>
               </div>
             </div>
 
-            <p className="settings-delete-warning">
-              This will permanently delete the user's Firestore profile.
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              Are you sure you want to delete user{" "}
+              <strong>{selectedUser.name || selectedUser.email}</strong>? This action cannot be undone.
             </p>
 
-            {/* BUTTONS */}
-
-            <div className="settings-modal-actions">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
-                className="settings-cancel-btn"
-                onClick={closeDeleteConfirmation}
-                disabled={deleteLoading}
+                className="btn-secondary px-4 py-2 text-xs"
+                onClick={closeDeleteModal}
+                disabled={deleting}
               >
                 Cancel
               </button>
-
               <button
                 type="button"
-                className="settings-confirm-delete-btn"
+                className="btn-danger px-5 py-2 text-xs"
                 onClick={handleDeleteUser}
-                disabled={deleteLoading}
+                disabled={deleting}
               >
-                {deleteLoading ? (
-                  <>
-                    <span className="settings-button-spinner"></span>
-                    Deleting...
-                  </>
-                ) : (
-                  <>
-                    <FiTrash2 />
-                    Delete User
-                  </>
-                )}
+                {deleting ? "Deleting..." : "Delete User"}
               </button>
             </div>
           </div>

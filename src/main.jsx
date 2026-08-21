@@ -1,5 +1,7 @@
-import React from "react";
+﻿import React from "react";
 import ReactDOM from "react-dom/client";
+
+import "./index.css";
 
 import App from "./App";
 
@@ -8,9 +10,6 @@ import { CartProvider } from "./contexts/CartContext";
 
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdminThemeProvider } from "./contexts/AdminThemeContext";
-
-import "./index.css";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
@@ -24,3 +23,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </AuthProvider>
   </React.StrictMode>,
 );
+

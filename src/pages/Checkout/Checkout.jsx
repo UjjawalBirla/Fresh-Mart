@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-
 import {
   FiArrowLeft,
   FiArrowRight,
@@ -10,549 +9,406 @@ import {
   FiShoppingBag,
   FiTruck,
   FiUser,
+  FiShield,
 } from "react-icons/fi";
-
 import { useNavigate } from "react-router-dom";
-
 import { useAuth } from "../../contexts/AuthContext";
-
 import { useCart } from "../../contexts/CartContext";
-
-import "./Checkout.css";
 
 function Checkout() {
   const navigate = useNavigate();
-
-  // =====================================================
-  // AUTH
-  // =====================================================
-
   const { user } = useAuth();
+  const { cartItems, cartCount, cartTotal, placeOrder, cartLoading, cartError } =
+    useCart();
 
-  // =====================================================
-  // CART
-  // =====================================================
-
-  const {
-    cartItems,
-    cartCount,
-    cartTotal,
-    placeOrder,
-    cartLoading,
-    cartError,
-  } = useCart();
-
-  // =====================================================
-  // FORM STATES
-  // =====================================================
-
-  const [name, setName] = useState("");
-
+  const [name, setName] = useState(user?.name || "");
   const [phone, setPhone] = useState("");
-
   const [address, setAddress] = useState("");
-
   const [city, setCity] = useState("");
-
   const [state, setState] = useState("");
-
   const [pincode, setPincode] = useState("");
-
   const [paymentMethod, setPaymentMethod] = useState("COD");
 
-  // =====================================================
-  // ORDER STATES
-  // =====================================================
-
   const [placingOrder, setPlacingOrder] = useState(false);
-
   const [error, setError] = useState("");
-
   const [orderSuccess, setOrderSuccess] = useState(false);
-
   const [orderId, setOrderId] = useState("");
 
-  // =====================================================
-  // DELIVERY
-  // =====================================================
-
   const deliveryCharge = cartTotal >= 499 ? 0 : 40;
-
-  // =====================================================
-  // TAX
-  // =====================================================
-
   const tax = cartTotal * 0.05;
-
-  // =====================================================
-  // FINAL TOTAL
-  // =====================================================
 
   const finalTotal = useMemo(() => {
     return cartTotal + deliveryCharge + tax;
   }, [cartTotal, deliveryCharge, tax]);
 
-  // =====================================================
-  // PLACE ORDER
-  // =====================================================
-
   const handlePlaceOrder = async (event) => {
     event.preventDefault();
-
     setError("");
-
-    // =================================================
-    // LOGIN CHECK
-    // =================================================
 
     if (!user?.uid) {
       setError("Please login before placing your order.");
-
       return;
     }
-
-    // =================================================
-    // CART CHECK
-    // =================================================
 
     if (!cartItems.length) {
       setError("Your cart is empty.");
-
       return;
     }
-
-    // =================================================
-    // NAME
-    // =================================================
 
     const cleanName = name.trim();
-
     if (!cleanName) {
       setError("Please enter your name.");
-
       return;
     }
-
-    // =================================================
-    // PHONE
-    // =================================================
 
     const cleanPhone = phone.replace(/\D/g, "");
-
     if (cleanPhone.length !== 10) {
-      setError("Please enter a valid 10 digit mobile number.");
-
+      setError("Please enter a valid 10-digit mobile number.");
       return;
     }
-
-    // =================================================
-    // ADDRESS
-    // =================================================
 
     const cleanAddress = address.trim();
-
     if (!cleanAddress) {
       setError("Please enter your delivery address.");
-
       return;
     }
-
-    // =================================================
-    // CITY
-    // =================================================
 
     const cleanCity = city.trim();
-
     if (!cleanCity) {
       setError("Please enter your city.");
-
       return;
     }
-
-    // =================================================
-    // STATE
-    // =================================================
 
     const cleanState = state.trim();
-
     if (!cleanState) {
       setError("Please enter your state.");
-
       return;
     }
-
-    // =================================================
-    // PINCODE
-    // =================================================
 
     const cleanPincode = pincode.replace(/\D/g, "");
-
     if (cleanPincode.length !== 6) {
-      setError("Please enter a valid 6 digit pincode.");
-
+      setError("Please enter a valid 6-digit pincode.");
       return;
     }
-
-    // =================================================
-    // PAYMENT
-    // =================================================
 
     if (!paymentMethod) {
       setError("Please select a payment method.");
-
       return;
     }
-
-    // =================================================
-    // START
-    // =================================================
 
     setPlacingOrder(true);
 
     try {
-      // =================================================
-      // CALL CART CONTEXT
-      //
-      // Stock is checked and deducted inside
-      // CartContext.placeOrder()
-      // =================================================
-
       const result = await placeOrder({
         userId: user.uid,
-
         userEmail: user.email || "",
-
         customer: {
           name: cleanName,
-
           phone: cleanPhone,
-
           email: user.email || "",
         },
-
         paymentMethod,
-
         deliveryAddress: {
           name: cleanName,
-
           phone: cleanPhone,
-
           address: cleanAddress,
-
           city: cleanCity,
-
           state: cleanState,
-
           pincode: cleanPincode,
         },
       });
 
-      // =================================================
-      // ORDER FAILED
-      // =================================================
-
       if (!result?.success) {
-        setError(
-          result?.error ||
-            cartError ||
-            "Unable to place your order. Please try again.",
-        );
-
+        setError(result?.error || cartError || "Unable to place order.");
         return;
       }
 
-      // =================================================
-      // SUCCESS
-      // =================================================
-
       setOrderId(result.orderId || "");
-
       setOrderSuccess(true);
-    } catch (orderError) {
-      console.error("Place Order Error:", orderError);
-
-      setError(
-        orderError.message || "Unable to place your order. Please try again.",
-      );
+    } catch (orderErr) {
+      console.error("Place Order Error:", orderErr);
+      setError(orderErr.message || "Unable to place order.");
     } finally {
       setPlacingOrder(false);
     }
   };
 
-  // =====================================================
-  // SUCCESS SCREEN
-  // =====================================================
-
   if (orderSuccess) {
     return (
-      <main className="checkout-page">
-        <section className="checkout-success">
-          <div className="checkout-success-icon">
+      <div className="page-container py-16 animate-rise">
+        <div className="card mx-auto max-w-lg p-8 sm:p-12 text-center shadow-2xl space-y-6">
+          <div className="grid h-24 w-24 place-items-center rounded-3xl bg-emerald-100 text-5xl text-emerald-600 shadow-inner animate-float mx-auto dark:bg-emerald-950/60 dark:text-emerald-400">
             <FiCheckCircle />
           </div>
 
-          <span className="checkout-success-label">ORDER PLACED</span>
-
-          <h1>Thank You! 🎉</h1>
-
-          <p>Your order has been placed successfully.</p>
-
-          <div className="checkout-order-id">
-            <span>Order ID</span>
-
-            <strong>{orderId}</strong>
+          <div className="space-y-2">
+            <span className="section-label text-emerald-600 dark:text-emerald-400">
+              Order Confirmed
+            </span>
+            <h1 className="font-display text-3xl font-black text-slate-800 dark:text-white">
+              Thank You for Ordering! 🎉
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Your order has been received and sent to our farm dispatch center.
+            </p>
           </div>
 
-          <p className="checkout-success-note">
-            We will prepare your fresh products and deliver them to your
-            address.
-          </p>
+          <div className="rounded-2xl bg-slate-50 p-4 border border-slate-200 dark:bg-slate-800/60 dark:border-slate-700">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">
+              Order Identifier
+            </span>
+            <strong className="font-display text-lg font-mono font-black text-slate-800 dark:text-white">
+              {orderId}
+            </strong>
+          </div>
 
-          <div className="checkout-success-actions">
-            <button type="button" onClick={() => navigate("/")}>
-              Continue Shopping
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              type="button"
+              className="btn-primary flex-1"
+              onClick={() => navigate("/orders")}
+            >
+              <span>View My Orders</span>
               <FiArrowRight />
             </button>
-
-            <button type="button" onClick={() => navigate("/orders")}>
-              View My Orders
+            <button
+              type="button"
+              className="btn-secondary flex-1"
+              onClick={() => navigate("/")}
+            >
+              <span>Continue Shopping</span>
             </button>
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
     );
   }
-
-  // =====================================================
-  // EMPTY CART
-  // =====================================================
 
   if (!cartItems.length) {
     return (
-      <main className="checkout-page">
-        <section className="checkout-empty">
-          <FiShoppingBag />
-
-          <h1>Your cart is empty</h1>
-
-          <p>Add some fresh products before checking out.</p>
-
-          <button type="button" onClick={() => navigate("/")}>
-            Start Shopping
-            <FiArrowRight />
+      <div className="page-container py-16 animate-rise">
+        <div className="card mx-auto max-w-md p-8 text-center space-y-4 shadow-xl">
+          <div className="grid h-20 w-20 place-items-center rounded-2xl bg-market-lime/40 text-4xl text-market-leaf mx-auto dark:bg-market-leaf/20">
+            <FiShoppingBag />
+          </div>
+          <h2 className="font-display text-2xl font-black text-slate-800 dark:text-white">
+            Your Cart is Empty
+          </h2>
+          <p className="text-xs text-slate-500">
+            Add items to your cart before proceeding to checkout.
+          </p>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => navigate("/fruits")}
+          >
+            <FiArrowLeft />
+            <span>Browse Products</span>
           </button>
-        </section>
-      </main>
+        </div>
+      </div>
     );
   }
 
-  // =====================================================
-  // CHECKOUT UI
-  // =====================================================
-
   return (
-    <main className="checkout-page">
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
-      <section className="checkout-header">
-        <button
-          type="button"
-          className="checkout-back-btn"
-          onClick={() => navigate("/cart")}
-        >
-          <FiArrowLeft />
-          Back to Cart
-        </button>
-
+    <div className="page-container space-y-8 pb-16 animate-rise">
+      {/* Header */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-6 dark:border-slate-800">
         <div>
-          <span className="checkout-label">SECURE CHECKOUT</span>
+          <button
+            type="button"
+            className="group inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-market-leaf mb-2 dark:text-slate-400 dark:hover:text-market-lime transition-colors"
+            onClick={() => navigate("/cart")}
+          >
+            <FiArrowLeft className="transition-transform group-hover:-translate-x-1" />
+            <span>Back to Shopping Cart</span>
+          </button>
 
-          <h1>Complete Your Order</h1>
-
-          <p>Enter your delivery details and place your order.</p>
+          <h1 className="font-display text-3xl font-black text-slate-800 dark:text-white md:text-4xl">
+            Checkout & Delivery 🚚
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Provide your address and select your preferred payment mode.
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* =================================================
-          ERROR
-      ================================================= */}
-
-      {(error || cartError) && (
-        <div className="checkout-error">{error || cartError}</div>
+      {error && (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-bold text-red-700 shadow-xs dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
+          {error}
+        </div>
       )}
 
-      {/* =================================================
-          CHECKOUT
-      ================================================= */}
-
-      <form className="checkout-container" onSubmit={handlePlaceOrder}>
-        {/* =================================================
-            LEFT FORM
-        ================================================= */}
-
-        <div className="checkout-form">
-          {/* =================================================
-              CUSTOMER
-          ================================================= */}
-
-          <section className="checkout-card">
-            <div className="checkout-card-heading">
-              <div className="checkout-card-icon">
+      {/* Checkout Form & Summary Grid */}
+      <form onSubmit={handlePlaceOrder} className="grid gap-8 lg:grid-cols-12">
+        {/* Left Column: Input Forms */}
+        <div className="space-y-6 lg:col-span-8">
+          {/* Customer Details Card */}
+          <section className="card p-6 sm:p-8 space-y-5 shadow-lg">
+            <div className="flex items-center gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-market-lime/60 text-market-leaf text-lg dark:bg-market-leaf/30 dark:text-market-lime">
                 <FiUser />
               </div>
-
               <div>
-                <h2>Customer Details</h2>
-
-                <p>Tell us who is receiving the order.</p>
+                <h2 className="font-display text-xl font-black text-slate-800 dark:text-white">
+                  Customer Information
+                </h2>
+                <span className="text-xs text-slate-400">
+                  Recipient name and contact number
+                </span>
               </div>
             </div>
 
-            {/* NAME */}
-
-            <div className="checkout-field">
-              <label>Full Name</label>
-
-              <div className="checkout-input">
-                <FiUser />
-
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  disabled={placingOrder}
-                />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Full Name
+                </label>
+                <div className="input-field">
+                  <FiUser className="text-slate-400 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    disabled={placingOrder}
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* PHONE */}
-
-            <div className="checkout-field">
-              <label>Mobile Number</label>
-
-              <div className="checkout-input">
-                <FiPhone />
-
-                <input
-                  type="tel"
-                  placeholder="10 digit mobile number"
-                  maxLength={10}
-                  value={phone}
-                  onChange={(event) =>
-                    setPhone(event.target.value.replace(/\D/g, ""))
-                  }
-                  disabled={placingOrder}
-                />
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Mobile Number (10 Digits)
+                </label>
+                <div className="input-field">
+                  <FiPhone className="text-slate-400 shrink-0" />
+                  <input
+                    type="tel"
+                    placeholder="e.g. 9876543210"
+                    maxLength={10}
+                    value={phone}
+                    onChange={(event) =>
+                      setPhone(event.target.value.replace(/\D/g, ""))
+                    }
+                    disabled={placingOrder}
+                    required
+                  />
+                </div>
               </div>
             </div>
           </section>
 
-          {/* =================================================
-              DELIVERY
-          ================================================= */}
-
-          <section className="checkout-card">
-            <div className="checkout-card-heading">
-              <div className="checkout-card-icon">
+          {/* Delivery Address Card */}
+          <section className="card p-6 sm:p-8 space-y-5 shadow-lg">
+            <div className="flex items-center gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-market-lime/60 text-market-leaf text-lg dark:bg-market-leaf/30 dark:text-market-lime">
                 <FiMapPin />
               </div>
-
               <div>
-                <h2>Delivery Address</h2>
-
-                <p>Where should we deliver your fresh products?</p>
+                <h2 className="font-display text-xl font-black text-slate-800 dark:text-white">
+                  Delivery Address
+                </h2>
+                <span className="text-xs text-slate-400">
+                  Where should we bring your fresh groceries?
+                </span>
               </div>
             </div>
 
-            {/* ADDRESS */}
-
-            <div className="checkout-field">
-              <label>Address</label>
-
-              <textarea
-                placeholder="House / Flat / Street / Area"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                disabled={placingOrder}
-                rows={4}
-              />
-            </div>
-
-            {/* CITY + STATE */}
-
-            <div className="checkout-two-column">
-              <div className="checkout-field">
-                <label>City</label>
-
-                <input
-                  type="text"
-                  placeholder="City"
-                  value={city}
-                  onChange={(event) => setCity(event.target.value)}
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Street Address / House No. / Flat
+                </label>
+                <textarea
+                  rows={3}
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50/80 p-3.5 text-sm outline-none transition-all focus:border-market-leaf focus:bg-white focus:ring-2 focus:ring-market-leaf/20 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-100"
+                  placeholder="e.g. Flat 302, Green Valley Apartments, Main Street"
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
                   disabled={placingOrder}
+                  required
                 />
               </div>
 
-              <div className="checkout-field">
-                <label>State</label>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    City
+                  </label>
+                  <div className="input-field">
+                    <input
+                      type="text"
+                      placeholder="e.g. New Delhi"
+                      value={city}
+                      onChange={(event) => setCity(event.target.value)}
+                      disabled={placingOrder}
+                      required
+                    />
+                  </div>
+                </div>
 
-                <input
-                  type="text"
-                  placeholder="State"
-                  value={state}
-                  onChange={(event) => setState(event.target.value)}
-                  disabled={placingOrder}
-                />
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    State
+                  </label>
+                  <div className="input-field">
+                    <input
+                      type="text"
+                      placeholder="e.g. Delhi"
+                      value={state}
+                      onChange={(event) => setState(event.target.value)}
+                      disabled={placingOrder}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Pincode (6 Digits)
+                  </label>
+                  <div className="input-field">
+                    <input
+                      type="text"
+                      placeholder="e.g. 110001"
+                      maxLength={6}
+                      value={pincode}
+                      onChange={(event) =>
+                        setPincode(event.target.value.replace(/\D/g, ""))
+                      }
+                      disabled={placingOrder}
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* PINCODE */}
-
-            <div className="checkout-field">
-              <label>Pincode</label>
-
-              <input
-                type="text"
-                placeholder="6 digit pincode"
-                maxLength={6}
-                value={pincode}
-                onChange={(event) =>
-                  setPincode(event.target.value.replace(/\D/g, ""))
-                }
-                disabled={placingOrder}
-              />
             </div>
           </section>
 
-          {/* =================================================
-              PAYMENT
-          ================================================= */}
-
-          <section className="checkout-card">
-            <div className="checkout-card-heading">
-              <div className="checkout-card-icon">
+          {/* Payment Method Card */}
+          <section className="card p-6 sm:p-8 space-y-5 shadow-lg">
+            <div className="flex items-center gap-3 border-b border-slate-100 pb-3.5 dark:border-slate-800">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-market-lime/60 text-market-leaf text-lg dark:bg-market-leaf/30 dark:text-market-lime">
                 <FiCreditCard />
               </div>
-
               <div>
-                <h2>Payment Method</h2>
-
-                <p>Choose how you want to pay.</p>
+                <h2 className="font-display text-xl font-black text-slate-800 dark:text-white">
+                  Payment Method
+                </h2>
+                <span className="text-xs text-slate-400">
+                  Select payment mode for this order
+                </span>
               </div>
             </div>
 
-            <div className="checkout-payment-options">
-              {/* COD */}
-
+            <div className="grid gap-4 sm:grid-cols-2">
               <label
-                className={
+                className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border-2 p-4 transition-all duration-300 ${
                   paymentMethod === "COD"
-                    ? "checkout-payment-option active"
-                    : "checkout-payment-option"
-                }
+                    ? "border-market-leaf bg-market-lime/20 shadow-md dark:bg-market-leaf/20"
+                    : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900"
+                }`}
               >
                 <input
                   type="radio"
@@ -560,24 +416,24 @@ function Checkout() {
                   value="COD"
                   checked={paymentMethod === "COD"}
                   onChange={() => setPaymentMethod("COD")}
-                  disabled={placingOrder}
+                  className="h-4 w-4 text-market-leaf"
                 />
-
                 <div>
-                  <strong>Cash on Delivery</strong>
-
-                  <span>Pay when your order arrives.</span>
+                  <strong className="block text-sm font-bold text-slate-800 dark:text-white">
+                    Cash on Delivery
+                  </strong>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    Pay upon arrival at doorstep
+                  </span>
                 </div>
               </label>
 
-              {/* ONLINE */}
-
               <label
-                className={
+                className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border-2 p-4 transition-all duration-300 ${
                   paymentMethod === "ONLINE"
-                    ? "checkout-payment-option active"
-                    : "checkout-payment-option"
-                }
+                    ? "border-market-leaf bg-market-lime/20 shadow-md dark:bg-market-leaf/20"
+                    : "border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900"
+                }`}
               >
                 <input
                   type="radio"
@@ -585,125 +441,112 @@ function Checkout() {
                   value="ONLINE"
                   checked={paymentMethod === "ONLINE"}
                   onChange={() => setPaymentMethod("ONLINE")}
-                  disabled={placingOrder}
+                  className="h-4 w-4 text-market-leaf"
                 />
-
                 <div>
-                  <strong>Online Payment</strong>
-
-                  <span>Payment gateway integration.</span>
+                  <strong className="block text-sm font-bold text-slate-800 dark:text-white">
+                    UPI / Online Pay
+                  </strong>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    UPI, Cards & Netbanking
+                  </span>
                 </div>
               </label>
             </div>
           </section>
         </div>
 
-        {/* =================================================
-            SUMMARY
-        ================================================= */}
+        {/* Right Column: Checkout Summary Sticky Card */}
+        <aside className="lg:col-span-4">
+          <div className="card p-6 sm:p-8 space-y-6 shadow-2xl sticky top-24">
+            <h2 className="font-display text-2xl font-black text-slate-800 dark:text-white">
+              Order Review
+            </h2>
 
-        <aside className="checkout-summary">
-          <h2>Order Summary</h2>
-
-          <div className="checkout-summary-products">
-            {cartItems.map((product) => {
-              const quantity = Number(product.quantity || 1);
-
-              const price = Number(product.price || 0);
-
-              return (
-                <div className="checkout-summary-product" key={product.id}>
-                  <div className="checkout-summary-image">
-                    <img
-                      src={
-                        product.imageLarge ||
-                        product.image ||
-                        product.originalImage ||
-                        ""
-                      }
-                      alt={product.name}
-                    />
-                  </div>
-
-                  <div>
-                    <strong>{product.name}</strong>
-
-                    <span>
-                      {quantity} × ₹{price}
+            {/* Items Mini List */}
+            <div className="max-h-56 overflow-y-auto space-y-3 p-1">
+              {cartItems.map((prod) => (
+                <div key={prod.id} className="flex items-center gap-3">
+                  <img
+                    src={prod.imageLarge || prod.image || prod.originalImage}
+                    alt={prod.name}
+                    className="h-12 w-12 rounded-xl object-cover bg-market-cream shrink-0"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <strong className="block truncate text-xs font-bold text-slate-800 dark:text-white">
+                      {prod.name}
+                    </strong>
+                    <span className="text-[11px] text-slate-400">
+                      {prod.quantity} × ₹{prod.price}
                     </span>
                   </div>
-
-                  <strong>₹{(quantity * price).toFixed(2)}</strong>
+                  <span className="text-xs font-black text-slate-800 dark:text-white">
+                    ₹{(prod.quantity * prod.price).toFixed(2)}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          <div className="checkout-summary-divider"></div>
+            <div className="space-y-3 border-t border-slate-200 pt-4 text-sm dark:border-slate-700">
+              <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+                <span>Subtotal</span>
+                <span className="font-bold text-slate-800 dark:text-white">
+                  ₹{cartTotal.toFixed(2)}
+                </span>
+              </div>
 
-          <div className="checkout-summary-row">
-            <span>Subtotal</span>
+              <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+                <span>Delivery</span>
+                <span className="badge-success">
+                  {deliveryCharge === 0 ? "FREE" : `₹${deliveryCharge}`}
+                </span>
+              </div>
 
-            <strong>₹{cartTotal.toFixed(2)}</strong>
-          </div>
+              <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
+                <span>Tax (5%)</span>
+                <span className="font-bold text-slate-800 dark:text-white">
+                  ₹{tax.toFixed(2)}
+                </span>
+              </div>
 
-          <div className="checkout-summary-row">
-            <span>Delivery</span>
+              <div className="border-t border-slate-200 pt-3 dark:border-slate-700">
+                <div className="flex items-baseline justify-between">
+                  <span className="font-display text-lg font-bold text-slate-800 dark:text-white">
+                    Total
+                  </span>
+                  <strong className="font-display text-3xl font-black text-market-leaf dark:text-market-lime">
+                    ₹{finalTotal.toFixed(2)}
+                  </strong>
+                </div>
+              </div>
+            </div>
 
-            <strong>
-              {deliveryCharge === 0 ? (
-                <span className="free-delivery">FREE</span>
+            <button
+              type="submit"
+              className="btn-primary w-full py-4 text-base font-bold shadow-xl shadow-market-leaf/30 hover:shadow-2xl hover:shadow-market-leaf/40 active:scale-95 disabled:opacity-50"
+              disabled={placingOrder || cartLoading}
+            >
+              {placingOrder ? (
+                <>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  <span>Placing Order...</span>
+                </>
               ) : (
-                `₹${deliveryCharge}`
+                <>
+                  <span>Place Order</span>
+                  <FiArrowRight />
+                </>
               )}
-            </strong>
-          </div>
+            </button>
 
-          <div className="checkout-summary-row">
-            <span>Tax</span>
-
-            <strong>₹{tax.toFixed(2)}</strong>
-          </div>
-
-          <div className="checkout-summary-divider"></div>
-
-          <div className="checkout-final-total">
-            <span>Total</span>
-
-            <strong>₹{finalTotal.toFixed(2)}</strong>
-          </div>
-
-          <div className="checkout-delivery-info">
-            <FiTruck />
-
-            <div>
-              <strong>Fresh Delivery</strong>
-
-              <span>Free delivery on orders above ₹499</span>
+            <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 text-center">
+              <FiShield className="text-market-leaf" />
+              <span>Encrypted & secure checkout</span>
             </div>
           </div>
-
-          <button
-            type="submit"
-            className="checkout-place-order-btn"
-            disabled={placingOrder || cartLoading}
-          >
-            {placingOrder ? (
-              <>Placing Order...</>
-            ) : (
-              <>
-                Place Order
-                <FiArrowRight />
-              </>
-            )}
-          </button>
-
-          <p className="checkout-secure-note">
-            🔒 Your order information is securely stored.
-          </p>
         </aside>
       </form>
-    </main>
+    </div>
   );
 }
 

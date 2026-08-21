@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   collection,
   onSnapshot,
@@ -8,7 +7,6 @@ import {
   doc,
   serverTimestamp,
 } from "firebase/firestore";
-
 import {
   FiArrowLeft,
   FiBox,
@@ -21,71 +19,45 @@ import {
   FiTruck,
   FiUser,
   FiXCircle,
+  FiChevronDown,
+  FiChevronUp,
+  FiDollarSign,
 } from "react-icons/fi";
-
 import { useNavigate } from "react-router-dom";
-
 import { db } from "../../Firebase/Firebase";
-
-import "./AdminOrders.css";
 
 function AdminOrders() {
   const navigate = useNavigate();
-
-  // =====================================================
-  // STATES
-  // =====================================================
-
   const [orders, setOrders] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
-
   const [search, setSearch] = useState("");
-
   const [statusFilter, setStatusFilter] = useState("All");
-
   const [updatingOrder, setUpdatingOrder] = useState(null);
-
   const [expandedOrder, setExpandedOrder] = useState(null);
-
-  // =====================================================
-  // FETCH ALL ORDERS
-  // =====================================================
 
   useEffect(() => {
     const ordersQuery = query(collection(db, "orders"));
-
     const unsubscribe = onSnapshot(
       ordersQuery,
-
       (snapshot) => {
         const orderList = snapshot.docs.map((orderDoc) => ({
           id: orderDoc.id,
-
           ...orderDoc.data(),
         }));
 
-        // Newest order first
         orderList.sort((a, b) => {
           const dateA = a.createdAt?.toMillis?.() || 0;
-
           const dateB = b.createdAt?.toMillis?.() || 0;
-
           return dateB - dateA;
         });
 
         setOrders(orderList);
-
         setLoading(false);
       },
-
       (firebaseError) => {
         console.error("Admin Orders Error:", firebaseError);
-
         setError("Unable to load orders.");
-
         setLoading(false);
       },
     );
@@ -93,27 +65,15 @@ function AdminOrders() {
     return () => unsubscribe();
   }, []);
 
-  // =====================================================
-  // FORMAT DATE
-  // =====================================================
-
   const formatDate = (timestamp) => {
-    if (!timestamp) {
-      return "Date unavailable";
-    }
-
+    if (!timestamp) return "Date unavailable";
     try {
       const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-
       return date.toLocaleString("en-IN", {
         day: "2-digit",
-
         month: "short",
-
         year: "numeric",
-
         hour: "2-digit",
-
         minute: "2-digit",
       });
     } catch {
@@ -121,129 +81,80 @@ function AdminOrders() {
     }
   };
 
-  // =====================================================
-  // STATUS CLASS
-  // =====================================================
-
-  const getStatusClass = (status) => {
+  const getStatusBadge = (status) => {
     const value = String(status || "Pending").toLowerCase();
-
     if (value === "delivered" || value === "completed") {
-      return "admin-order-status-delivered";
+      return (
+        <span className="badge-success">
+          <FiCheckCircle /> Delivered
+        </span>
+      );
     }
-
     if (value === "cancelled" || value === "canceled") {
-      return "admin-order-status-cancelled";
+      return (
+        <span className="badge-danger">
+          <FiXCircle /> Cancelled
+        </span>
+      );
     }
-
     if (value === "shipped") {
-      return "admin-order-status-shipped";
+      return (
+        <span className="badge-info">
+          <FiTruck /> Shipped
+        </span>
+      );
     }
-
     if (value === "preparing") {
-      return "admin-order-status-preparing";
+      return (
+        <span className="badge-warning">
+          <FiPackage /> Preparing
+        </span>
+      );
     }
-
     if (value === "confirmed") {
-      return "admin-order-status-confirmed";
+      return (
+        <span className="badge-success">
+          <FiCheckCircle /> Confirmed
+        </span>
+      );
     }
-
-    return "admin-order-status-pending";
+    return (
+      <span className="badge-warning">
+        <FiClock /> Pending
+      </span>
+    );
   };
-
-  // =====================================================
-  // STATUS ICON
-  // =====================================================
-
-  const getStatusIcon = (status) => {
-    const value = String(status || "Pending").toLowerCase();
-
-    if (value === "delivered" || value === "completed") {
-      return <FiCheckCircle />;
-    }
-
-    if (value === "cancelled" || value === "canceled") {
-      return <FiXCircle />;
-    }
-
-    if (value === "shipped") {
-      return <FiTruck />;
-    }
-
-    if (value === "preparing") {
-      return <FiPackage />;
-    }
-
-    if (value === "confirmed") {
-      return <FiCheckCircle />;
-    }
-
-    return <FiClock />;
-  };
-
-  // =====================================================
-  // UPDATE ORDER STATUS
-  // =====================================================
 
   const handleStatusChange = async (orderId, newStatus) => {
-    if (!orderId) {
-      return;
-    }
-
+    if (!orderId) return;
     setUpdatingOrder(orderId);
 
     try {
       await updateDoc(doc(db, "orders", orderId), {
         status: newStatus,
-
         updatedAt: serverTimestamp(),
-
-        ...(newStatus === "Delivered" && {
-          paymentStatus: "Paid",
-        }),
+        ...(newStatus === "Delivered" && { paymentStatus: "Paid" }),
       });
-    } catch (firebaseError) {
-      console.error("Status Update Error:", firebaseError);
-
+    } catch (err) {
+      console.error("Status Update Error:", err);
       setError("Unable to update order status.");
     } finally {
       setUpdatingOrder(null);
     }
   };
 
-  // =====================================================
-  // CANCEL ORDER
-  // =====================================================
-
   const handleCancelOrder = async (order) => {
-    if (!order?.id) {
-      return;
-    }
-
-    if (order.status === "Delivered" || order.status === "Cancelled") {
-      return;
-    }
-
+    if (!order?.id) return;
+    if (order.status === "Delivered" || order.status === "Cancelled") return;
     const confirmed = window.confirm(`Cancel order ${order.id}?`);
-
-    if (!confirmed) {
-      return;
-    }
-
+    if (!confirmed) return;
     await handleStatusChange(order.id, "Cancelled");
   };
 
-  // =====================================================
-  // SEARCH + FILTER
-  // =====================================================
-
   const filteredOrders = orders.filter((order) => {
     const customerName = order.customer?.name || "";
-
     const phone = order.customer?.phone || "";
-
     const orderId = order.id || "";
-
     const searchValue = search.trim().toLowerCase();
 
     const matchesSearch =
@@ -253,594 +164,324 @@ function AdminOrders() {
       orderId.toLowerCase().includes(searchValue);
 
     const currentStatus = order.status || "Pending";
-
     const matchesStatus =
       statusFilter === "All" || currentStatus === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
 
-  // =====================================================
-  // ORDER COUNTS
-  // =====================================================
-
   const pendingOrders = orders.filter(
-    (order) => String(order.status || "Pending").toLowerCase() === "pending",
+    (o) => String(o.status || "Pending").toLowerCase() === "pending",
   ).length;
-
-  const confirmedOrders = orders.filter(
-    (order) => String(order.status || "").toLowerCase() === "confirmed",
-  ).length;
-
   const preparingOrders = orders.filter(
-    (order) => String(order.status || "").toLowerCase() === "preparing",
+    (o) => String(o.status || "").toLowerCase() === "preparing",
   ).length;
-
   const shippedOrders = orders.filter(
-    (order) => String(order.status || "").toLowerCase() === "shipped",
+    (o) => String(o.status || "").toLowerCase() === "shipped",
   ).length;
-
   const deliveredOrders = orders.filter(
-    (order) => String(order.status || "").toLowerCase() === "delivered",
+    (o) => String(o.status || "").toLowerCase() === "delivered",
   ).length;
-
-  const cancelledOrders = orders.filter(
-    (order) => String(order.status || "").toLowerCase() === "cancelled",
-  ).length;
-
-  // =====================================================
-  // TOTAL REVENUE
-  // =====================================================
 
   const totalRevenue = orders
-    .filter((order) => String(order.status || "").toLowerCase() !== "cancelled")
-    .reduce((total, order) => total + Number(order.total || 0), 0);
-
-  // =====================================================
-  // TOGGLE DETAILS
-  // =====================================================
+    .filter((o) => String(o.status || "").toLowerCase() !== "cancelled")
+    .reduce((total, o) => total + Number(o.total || 0), 0);
 
   const toggleOrder = (orderId) => {
     setExpandedOrder((current) => (current === orderId ? null : orderId));
   };
 
-  // =====================================================
-  // LOADING
-  // =====================================================
-
   if (loading) {
     return (
-      <div className="admin-orders-page">
-        <div className="admin-orders-loading">
-          <div className="admin-orders-spinner"></div>
-
-          <h2>Loading Orders...</h2>
-
-          <p>Please wait while orders are loading.</p>
-        </div>
+      <div className="flex flex-col items-center justify-center py-24">
+        <div className="h-10 w-10 animate-spin rounded-full border-3 border-market-leaf border-t-transparent" />
+        <p className="mt-4 text-sm font-semibold text-slate-500">Loading order records...</p>
       </div>
     );
   }
 
-  // =====================================================
-  // PAGE
-  // =====================================================
-
   return (
-    <div className="admin-orders-page">
-      {/* =================================================
-          HEADER
-      ================================================== */}
-
-      <div className="admin-orders-header">
+    <div className="space-y-8 pb-16 animate-rise">
+      {/* Top Header */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200/80 pb-6 dark:border-slate-800">
         <div>
-          <button
-            type="button"
-            className="admin-orders-back-btn"
-            onClick={() => navigate("/dashboard")}
-          >
-            <FiArrowLeft />
-            Dashboard
-          </button>
-
-          <span className="admin-orders-label">ADMIN PANEL</span>
-
-          <h1>Order Management</h1>
-
-          <p>Manage customer orders, payments and delivery status.</p>
+          <span className="section-label ml-5">Fulfillment Center</span>
+          <h1 className="font-display text-3xl font-black text-slate-800 dark:text-white md:text-4xl  ml-5">
+            Order Management 📋
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400  ml-5">
+            Process orders, change live dispatch status, and manage payments.
+          </p>
         </div>
       </div>
 
-      {/* =================================================
-          ERROR
-      ================================================== */}
-
       {error && (
-        <div className="admin-orders-error">
-          <FiXCircle />
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-bold text-red-700 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300">
           {error}
         </div>
       )}
 
-      {/* =================================================
-          STATISTICS
-      ================================================== */}
-
-      <div className="admin-orders-stats">
-        {/* TOTAL */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">
+      {/* KPI Stats Strip */}
+      <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
+        <div className="card flex items-center gap-3.5 p-4 shadow-lg">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-market-lime/60 text-market-leaf text-xl dark:bg-market-leaf/30 dark:text-market-lime">
             <FiBox />
           </div>
-
           <div>
-            <span>Total Orders</span>
-
-            <strong>{orders.length}</strong>
+            <span className="text-[11px] font-semibold text-slate-400">Total</span>
+            <strong className="font-display text-xl font-black block text-slate-800 dark:text-white">
+              {orders.length}
+            </strong>
           </div>
         </div>
 
-        {/* PENDING */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">
+        <div className="card flex items-center gap-3.5 p-4 shadow-lg">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-100 text-amber-600 text-xl dark:bg-amber-950/50 dark:text-amber-400">
             <FiClock />
           </div>
-
           <div>
-            <span>Pending</span>
-
-            <strong>{pendingOrders}</strong>
+            <span className="text-[11px] font-semibold text-slate-400">Pending</span>
+            <strong className="font-display text-xl font-black block text-amber-600 dark:text-amber-400">
+              {pendingOrders}
+            </strong>
           </div>
         </div>
 
-        {/* PREPARING */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">
+        <div className="card flex items-center gap-3.5 p-4 shadow-lg">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sky-100 text-sky-600 text-xl dark:bg-sky-950/50 dark:text-sky-400">
             <FiPackage />
           </div>
-
           <div>
-            <span>Preparing</span>
-
-            <strong>{preparingOrders}</strong>
+            <span className="text-[11px] font-semibold text-slate-400">Preparing</span>
+            <strong className="font-display text-xl font-black block text-sky-600 dark:text-sky-400">
+              {preparingOrders}
+            </strong>
           </div>
         </div>
 
-        {/* SHIPPED */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">
-            <FiTruck />
-          </div>
-
-          <div>
-            <span>Shipped</span>
-
-            <strong>{shippedOrders}</strong>
-          </div>
-        </div>
-
-        {/* DELIVERED */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">
+        <div className="card flex items-center gap-3.5 p-4 shadow-lg">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-600 text-xl dark:bg-emerald-950/50 dark:text-emerald-400">
             <FiCheckCircle />
           </div>
-
           <div>
-            <span>Delivered</span>
-
-            <strong>{deliveredOrders}</strong>
+            <span className="text-[11px] font-semibold text-slate-400">Delivered</span>
+            <strong className="font-display text-xl font-black block text-emerald-600 dark:text-emerald-400">
+              {deliveredOrders}
+            </strong>
           </div>
         </div>
 
-        {/* REVENUE */}
-
-        <div className="admin-order-stat-card">
-          <div className="admin-order-stat-icon">₹</div>
-
+        <div className="card flex items-center gap-3.5 p-4 shadow-lg col-span-2 lg:col-span-1">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-market-leaf text-white text-lg shadow-sm">
+            ₹
+          </div>
           <div>
-            <span>Revenue</span>
-
-            <strong>₹{totalRevenue.toFixed(2)}</strong>
+            <span className="text-[11px] font-semibold text-slate-400">Gross Sales</span>
+            <strong className="font-display text-lg font-black block text-market-leaf dark:text-market-lime">
+              ₹{totalRevenue.toFixed(2)}
+            </strong>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* =================================================
-          SEARCH + FILTER
-      ================================================== */}
-
-      <div className="admin-orders-tools">
-        <div className="admin-orders-search">
-          <FiSearch />
-
+      {/* Toolbar: Search + Status Filter */}
+      <div className="card flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 shadow-md">
+        <div className="input-field min-h-10 py-1 flex-1 sm:max-w-md">
+          <FiSearch className="text-slate-400" />
           <input
             type="text"
-            placeholder="Search order ID, customer name or phone..."
+            placeholder="Search by customer, phone, or order ID..."
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
+            className="text-xs"
           />
         </div>
 
-        <select
-          value={statusFilter}
-          onChange={(event) => setStatusFilter(event.target.value)}
-        >
-          <option value="All">All Orders</option>
+        <div className="flex items-center gap-3">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold outline-none dark:border-slate-700 dark:bg-slate-900"
+          >
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
 
-          <option value="Pending">Pending</option>
-
-          <option value="Confirmed">Confirmed</option>
-
-          <option value="Preparing">Preparing</option>
-
-          <option value="Shipped">Shipped</option>
-
-          <option value="Delivered">Delivered</option>
-
-          <option value="Cancelled">Cancelled</option>
-        </select>
-      </div>
-
-      {/* =================================================
-          RESULT COUNT
-      ================================================== */}
-
-      <div className="admin-orders-result-count">
-        Showing <strong>{filteredOrders.length}</strong> of{" "}
-        <strong>{orders.length}</strong> orders
-      </div>
-
-      {/* =================================================
-          NO ORDERS
-      ================================================== */}
-
-      {filteredOrders.length === 0 ? (
-        <div className="admin-orders-empty">
-          <FiBox />
-
-          <h2>No Orders Found</h2>
-
-          <p>No orders match your current search or filter.</p>
+          <span className="text-xs font-semibold text-slate-400">
+            {filteredOrders.length} orders
+          </span>
         </div>
-      ) : (
-        /* =================================================
-           ORDER LIST
-        ================================================= */
+      </div>
 
-        <div className="admin-orders-list">
-          {filteredOrders.map((order) => {
+      {/* Order Cards List */}
+      <section className="space-y-6">
+        {filteredOrders.length === 0 ? (
+          <div className="card p-12 text-center text-slate-400 text-sm">
+            No matching orders found for this search or filter.
+          </div>
+        ) : (
+          filteredOrders.map((order) => {
             const status = order.status || "Pending";
-
             const items = Array.isArray(order.items) ? order.items : [];
-
             const isExpanded = expandedOrder === order.id;
 
             return (
-              <article className="admin-order-card" key={order.id}>
-                {/* ======================================
-                      ORDER HEADER
-                  ======================================= */}
-
-                <div className="admin-order-card-header">
-                  <div className="admin-order-main">
-                    <div className="admin-order-icon">
+              <article
+                key={order.id}
+                className="card overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:border-market-leaf/30"
+              >
+                {/* Card Top Row */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 bg-slate-50/60 p-5 sm:px-6 dark:border-slate-800 dark:bg-slate-800/40">
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-market-lime/60 text-market-leaf text-lg dark:bg-market-leaf/30 dark:text-market-lime">
                       <FiPackage />
                     </div>
-
                     <div>
-                      <span>ORDER ID</span>
-
-                      <strong>{order.id}</strong>
-
-                      <small>{formatDate(order.createdAt)}</small>
-                    </div>
-                  </div>
-
-                  {/* STATUS */}
-
-                  <div
-                    className={`admin-order-status ${getStatusClass(status)}`}
-                  >
-                    {getStatusIcon(status)}
-
-                    <span>{status}</span>
-                  </div>
-                </div>
-
-                {/* ======================================
-                      CUSTOMER
-                  ======================================= */}
-
-                <div className="admin-order-customer">
-                  <div className="admin-order-customer-info">
-                    <FiUser />
-
-                    <div>
-                      <span>Customer</span>
-
-                      <strong>
-                        {order.customer?.name || "Unknown Customer"}
+                      <strong className="block text-sm font-bold text-slate-800 dark:text-white">
+                        Order #{order.id}
                       </strong>
+                      <span className="text-[11px] text-slate-400">
+                        {formatDate(order.createdAt)}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="admin-order-customer-info">
-                    <FiPhone />
-
-                    <div>
-                      <span>Phone</span>
-
-                      <strong>{order.customer?.phone || "N/A"}</strong>
-                    </div>
-                  </div>
-
-                  <div className="admin-order-customer-info">
-                    <span>Payment</span>
-
-                    <strong>{order.paymentMethod || "COD"}</strong>
-                  </div>
-
-                  <div className="admin-order-customer-info">
-                    <span>Total</span>
-
-                    <strong>₹{Number(order.total || 0).toFixed(2)}</strong>
+                  <div className="flex items-center gap-3">
+                    {getStatusBadge(status)}
+                    <button
+                      type="button"
+                      className="grid h-9 w-9 place-items-center rounded-xl bg-white text-slate-600 shadow-sm border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                      onClick={() => toggleOrder(order.id)}
+                    >
+                      {isExpanded ? <FiChevronUp /> : <FiChevronDown />}
+                    </button>
                   </div>
                 </div>
 
-                {/* ======================================
-                      ADDRESS
-                  ======================================= */}
-
-                {order.deliveryAddress && (
-                  <div className="admin-order-address">
-                    <FiMapPin />
-
-                    <div>
-                      <span>Delivery Address</span>
-
-                      <p>
-                        {order.deliveryAddress.address},{" "}
-                        {order.deliveryAddress.city},{" "}
-                        {order.deliveryAddress.state} -{" "}
-                        {order.deliveryAddress.pincode}
-                      </p>
-                    </div>
+                {/* Customer Details Strip */}
+                <div className="grid grid-cols-2 gap-4 p-5 sm:grid-cols-4 sm:px-6 border-b border-slate-100 dark:border-slate-800/80 text-xs">
+                  <div>
+                    <span className="text-slate-400 block font-semibold">Customer</span>
+                    <strong className="text-slate-800 dark:text-white text-sm">
+                      {order.customer?.name || "Customer"}
+                    </strong>
                   </div>
-                )}
 
-                {/* ======================================
-                      STATUS UPDATE
-                  ======================================= */}
+                  <div>
+                    <span className="text-slate-400 block font-semibold">Contact</span>
+                    <strong className="text-slate-800 dark:text-white text-sm">
+                      {order.customer?.phone || "N/A"}
+                    </strong>
+                  </div>
 
-                <div className="admin-order-status-control">
-                  <label>Update Order Status</label>
+                  <div>
+                    <span className="text-slate-400 block font-semibold">Payment</span>
+                    <strong className="text-slate-800 dark:text-white text-sm">
+                      {order.paymentMethod || "COD"} · {order.paymentStatus || "Pending"}
+                    </strong>
+                  </div>
 
-                  <select
-                    value={status}
-                    disabled={updatingOrder === order.id}
-                    onChange={(event) =>
-                      handleStatusChange(order.id, event.target.value)
-                    }
-                  >
-                    <option value="Pending">Pending</option>
-
-                    <option value="Confirmed">Confirmed</option>
-
-                    <option value="Preparing">Preparing</option>
-
-                    <option value="Shipped">Shipped</option>
-
-                    <option value="Delivered">Delivered</option>
-
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-
-                  {updatingOrder === order.id && <span>Updating...</span>}
+                  <div>
+                    <span className="text-slate-400 block font-semibold">Total</span>
+                    <strong className="text-market-leaf dark:text-market-lime text-base font-black">
+                      ₹{Number(order.total || 0).toFixed(2)}
+                    </strong>
+                  </div>
                 </div>
 
-                {/* ======================================
-                      PRODUCTS
-                  ======================================= */}
+                {/* Status Control Strip */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 sm:px-6 bg-market-cream/30 border-b border-slate-100 dark:border-slate-800 dark:bg-slate-900/30">
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-slate-700 dark:text-slate-300 shrink-0">
+                      Update Status:
+                    </label>
+                    <select
+                      value={status}
+                      disabled={updatingOrder === order.id}
+                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                      className="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold outline-none shadow-xs dark:border-slate-700 dark:bg-slate-800"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Preparing">Preparing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
+                    </select>
 
-                <div className="admin-order-products">
-                  <div className="admin-order-products-heading">
-                    <h3>Products</h3>
-
-                    <span>
-                      {order.itemCount ||
-                        items.reduce(
-                          (total, item) => total + Number(item.quantity || 0),
-                          0,
-                        )}{" "}
-                      items
-                    </span>
+                    {updatingOrder === order.id && (
+                      <span className="text-xs font-semibold text-market-leaf animate-pulse">
+                        Updating...
+                      </span>
+                    )}
                   </div>
 
-                  {(isExpanded ? items : items.slice(0, 3)).map(
-                    (item, index) => {
-                      const quantity = Number(item.quantity || 1);
-
-                      const price = Number(item.price || 0);
-
-                      const image =
-                        item.image ||
-                        item.imageLarge ||
-                        item.originalImage ||
-                        "";
-
-                      return (
-                        <div
-                          className="admin-order-product"
-                          key={item.productId || `${order.id}-${index}`}
-                        >
-                          <div className="admin-order-product-image">
-                            <img src={image} alt={item.name || "Product"} />
-                          </div>
-
-                          <div className="admin-order-product-info">
-                            <strong>{item.name}</strong>
-
-                            <span>
-                              {quantity} {item.unit || "item"} × ₹{price}
-                            </span>
-                          </div>
-
-                          <strong>₹{(quantity * price).toFixed(2)}</strong>
-                        </div>
-                      );
-                    },
+                  {status !== "Delivered" && status !== "Cancelled" && (
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-red-500 hover:text-red-700"
+                      onClick={() => handleCancelOrder(order)}
+                    >
+                      <FiXCircle />
+                      <span>Cancel Order</span>
+                    </button>
                   )}
                 </div>
 
-                {/* MORE */}
-
-                {items.length > 3 && (
-                  <button
-                    type="button"
-                    className="admin-order-view-btn"
-                    onClick={() => toggleOrder(order.id)}
-                  >
-                    {isExpanded
-                      ? "Show Less"
-                      : `View ${items.length - 3} More Products`}
-                  </button>
-                )}
-
-                {/* ======================================
-                      FOOTER
-                  ======================================= */}
-
-                <div className="admin-order-footer">
-                  <div>
-                    <span>Payment Status</span>
-
-                    <strong>{order.paymentStatus || "Pending"}</strong>
-                  </div>
-
-                  <div>
-                    <span>Order Total</span>
-
-                    <strong>₹{Number(order.total || 0).toFixed(2)}</strong>
-                  </div>
-
-                  <div className="admin-order-footer-actions">
-                    <button type="button" onClick={() => toggleOrder(order.id)}>
-                      {isExpanded ? "Hide Details" : "View Details"}
-                    </button>
-
-                    {status !== "Delivered" && status !== "Cancelled" && (
-                      <button
-                        type="button"
-                        className="admin-order-cancel-btn"
-                        onClick={() => handleCancelOrder(order)}
-                        disabled={updatingOrder === order.id}
+                {/* Products Section */}
+                <div className="p-5 sm:px-6 space-y-2.5">
+                  {(isExpanded ? items : items.slice(0, 2)).map((item, index) => {
+                    const image = item.image || item.imageLarge || item.originalImage;
+                    return (
+                      <div
+                        key={item.productId || `${order.id}-${index}`}
+                        className="flex items-center gap-3.5 rounded-xl bg-slate-50/50 p-2.5 dark:bg-slate-800/30 text-xs"
                       >
-                        Cancel Order
-                      </button>
-                    )}
-                  </div>
+                        <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-market-cream dark:bg-slate-800">
+                          {image && (
+                            <img
+                              src={image}
+                              alt={item.name}
+                              className="h-full w-full object-cover"
+                            />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <strong className="block truncate text-slate-800 dark:text-white font-bold">
+                            {item.name}
+                          </strong>
+                          <span className="text-slate-400">
+                            {item.quantity} {item.unit || "item"} × ₹{item.price}
+                          </span>
+                        </div>
+                        <span className="font-bold text-slate-800 dark:text-white">
+                          ₹{(Number(item.quantity || 1) * Number(item.price || 0)).toFixed(2)}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
 
-                {/* ======================================
-                      EXPANDED TRACKING
-                  ======================================= */}
-
-                {isExpanded && (
-                  <div className="admin-order-tracking">
-                    <h3>Order Progress</h3>
-
-                    <div className="admin-order-tracking-line">
-                      <div
-                        className={
-                          String(status).toLowerCase() !== "cancelled"
-                            ? "admin-tracking-step completed"
-                            : "admin-tracking-step"
-                        }
-                      >
-                        <div>
-                          <FiClock />
-                        </div>
-
-                        <span>Pending</span>
-                      </div>
-
-                      <div
-                        className={
-                          [
-                            "confirmed",
-                            "preparing",
-                            "shipped",
-                            "delivered",
-                          ].includes(String(status).toLowerCase())
-                            ? "admin-tracking-step completed"
-                            : "admin-tracking-step"
-                        }
-                      >
-                        <div>
-                          <FiCheckCircle />
-                        </div>
-
-                        <span>Confirmed</span>
-                      </div>
-
-                      <div
-                        className={
-                          ["preparing", "shipped", "delivered"].includes(
-                            String(status).toLowerCase(),
-                          )
-                            ? "admin-tracking-step completed"
-                            : "admin-tracking-step"
-                        }
-                      >
-                        <div>
-                          <FiPackage />
-                        </div>
-
-                        <span>Preparing</span>
-                      </div>
-
-                      <div
-                        className={
-                          ["shipped", "delivered"].includes(
-                            String(status).toLowerCase(),
-                          )
-                            ? "admin-tracking-step completed"
-                            : "admin-tracking-step"
-                        }
-                      >
-                        <div>
-                          <FiTruck />
-                        </div>
-
-                        <span>Shipped</span>
-                      </div>
-
-                      <div
-                        className={
-                          String(status).toLowerCase() === "delivered"
-                            ? "admin-tracking-step completed"
-                            : "admin-tracking-step"
-                        }
-                      >
-                        <div>
-                          <FiCheckCircle />
-                        </div>
-
-                        <span>Delivered</span>
-                      </div>
-                    </div>
+                {/* Delivery Address & Expanded Details */}
+                {isExpanded && order.deliveryAddress && (
+                  <div className="border-t border-slate-100 p-5 sm:px-6 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900/50 text-xs space-y-1">
+                    <span className="font-bold text-slate-500 block">Delivery Address:</span>
+                    <p className="text-slate-700 dark:text-slate-300">
+                      {order.deliveryAddress.address}, {order.deliveryAddress.city},{" "}
+                      {order.deliveryAddress.state} - {order.deliveryAddress.pincode}
+                    </p>
                   </div>
                 )}
               </article>
             );
-          })}
-        </div>
-      )}
+          })
+        )}
+      </section>
     </div>
   );
 }

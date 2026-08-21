@@ -63,6 +63,10 @@ const Groceries = lazy(() => import("./pages/Groceries/Groceries"));
 
 const Offers = lazy(() => import("./pages/Offers/Offers"));
 
+const ProductDetails = lazy(
+  () => import("./pages/ProductDetails/ProductDetails"),
+);
+
 const Cart = lazy(() => import("./pages/Cart/Cart"));
 
 // =========================================
@@ -208,6 +212,8 @@ function App() {
             <Route path="groceries" element={<Groceries />} />
 
             <Route path="offers" element={<Offers />} />
+
+            <Route path="product/:productId" element={<ProductDetails />} />
 
             {/* =================================
                   CART
